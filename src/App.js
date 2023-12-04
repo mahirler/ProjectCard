@@ -11,7 +11,7 @@ import {
 } from "react-native-paper";
 
 export default function App() {
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState(false);
   const theme = useTheme();
 
   const styles = StyleSheet.create({
@@ -40,36 +40,33 @@ export default function App() {
     <View style={styles.container}>
       <ActivityIndicator
         size={"large"}
-        animating={true}
+        animating={false}
         color={MD2Colors.red800}
       />
       <ProgressBar
         style={{ width: 300, height: 50 }}
-        progress={progress}
+        progress={progress ? 1 : 0}
         color={MD3Colors.error50}
       />
       <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <TextInput label="email" mode="outlined" style={{ width: 300 }} />
-        <Button
-          style={{ backgroundColor: theme.colors.primary }}
-          mode="contained"
-          textColor={theme.colors.textColor}
-          onPress={() => setProgress(1)}
-        >
-          Çok konuşma sikmim
-        </Button>
+        <TextInput label="email" mode="outlined" style={{ width: 250 }} />
       </View>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <TextInput label="email" mode="outlined" style={{ width: 300 }} />
-        <Button
-          mode="contained"
-          style={{ backgroundColor: theme.colors.primary }}
-          textColor={theme.colors.textColor}
-          onPress={() => setProgress(0)}
-        >
-          Press me
-        </Button>
+        <TextInput label="email" mode="outlined" style={{ width: 250 }} />
       </View>
+      <Button
+        mode="contained"
+        style={{
+          backgroundColor: theme.colors.primary,
+          width: 250,
+          margin: 0,
+          justifyContent: "center",
+        }}
+        textColor={theme.colors.textColor}
+        onPress={() => setProgress(!progress)}
+      >
+        Load
+      </Button>
     </View>
   );
 }

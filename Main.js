@@ -38,9 +38,6 @@ const Main = () => {
   return (
     <PaperProvider theme={darkTheme}>
       <App />
-      <Button mode="contained" onPress={() => setTheme("light")}>
-        Change
-      </Button>
     </PaperProvider>
   );
 };
