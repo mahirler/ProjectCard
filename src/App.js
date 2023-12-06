@@ -10,24 +10,11 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
-          headerShown: true,
+          headerShown: false,
         }}
       >
-        <Stack.Screen
-          name="Registration"
-          component={Registration}
-          options={{ headerTitle: "test", headerTitleAlign: "center" }}
-        />
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{
-            headerTitle: "Project",
-            headerTitleAlign: "center",
-            headerStyle: { backgroundColor: "black" },
-            headerTitleStyle: { color: "white" },
-          }}
-        />
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Registration" component={Registration} />
       </Stack.Navigator>
     </NavigationContainer>
   );

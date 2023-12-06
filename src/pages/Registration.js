@@ -27,7 +27,7 @@ export default function Registration({ navigation }) {
   });
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 30, color: "red" }}>Selam</Text>
+      <Text style={{ fontSize: 30 }}>Selam</Text>
       <Button mode="contained" onPress={() => navigation.navigate("Home")}>
         Navigate
       </Button>

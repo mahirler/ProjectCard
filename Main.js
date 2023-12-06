@@ -36,7 +36,7 @@ const Main = () => {
   const [thm, setTheme] = useState(useColorScheme());
   const theme = thm === "dark" ? darkTheme : lightTheme;
   return (
-    <PaperProvider theme={darkTheme}>
+    <PaperProvider theme={lightTheme}>
       <App />
     </PaperProvider>
   );
