@@ -3,11 +3,11 @@ import {
   MD3LightTheme as DefaultTheme,
   MD3DarkTheme as DarkTheme,
   PaperProvider,
-  Button,
 } from "react-native-paper";
 import App from "./src/App";
-import { AppRegistry, useColorScheme } from "react-native";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { PreferencesContext } from "./src/contexts/PreferencesContext";
+import { StatusBar } from "react-native";
 
 const lightTheme = {
   ...DefaultTheme,
@@ -15,8 +15,12 @@ const lightTheme = {
   myOwnProperty: true,
   // Specify custom property in nested object
   colors: {
+    ...DefaultTheme.colors,
     primary: "white",
     textColor: "black",
+    backgroundColor: "#f9f7f8",
+    iconColor: "black",
+    modalWindow: "grey",
   },
 };
 
@@ -29,16 +33,38 @@ const darkTheme = {
     ...DarkTheme.colors,
     primary: "black",
     textColor: "white",
+    backgroundColor: "#191919",
+    iconColor: "white",
   },
 };
 
 const Main = () => {
-  const [thm, setTheme] = useState(useColorScheme());
-  const theme = thm === "dark" ? darkTheme : lightTheme;
+  const [isThemeDark, setIsThemeDark] = useState(false);
+
+  let theme = isThemeDark ? darkTheme : lightTheme;
+
+  const toggleTheme = useCallback(() => {
+    return setIsThemeDark(!isThemeDark);
+  }, [isThemeDark]);
+
+  const preferences = useMemo(
+    () => ({
+      toggleTheme,
+      isThemeDark,
+      theme,
+    }),
+    [toggleTheme, isThemeDark, theme]
+  );
   return (
-    <PaperProvider theme={lightTheme}>
-      <App />
-    </PaperProvider>
+    <PreferencesContext.Provider value={preferences}>
+      <StatusBar
+        barStyle={isThemeDark ? "light-content" : "dark-content"}
+        backgroundColor={theme.colors.backgroundColor}
+      />
+      <PaperProvider theme={theme}>
+        <App />
+      </PaperProvider>
+    </PreferencesContext.Provider>
   );
 };
 

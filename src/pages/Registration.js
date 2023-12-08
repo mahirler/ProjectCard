@@ -1,5 +1,7 @@
+import { useContext, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { Button, Text, useTheme } from "react-native-paper";
+import { AppBarContext } from "../contexts/AppBarContext";
 
 export default function Registration({ navigation }) {
   const theme = useTheme();
@@ -25,6 +27,13 @@ export default function Registration({ navigation }) {
       color: "red",
     },
   });
+
+  const { setShowNavigator, setShowHeader } = useContext(AppBarContext);
+
+  useEffect(() => {
+    setShowHeader(false);
+    setShowNavigator(false);
+  }, []);
   return (
     <View style={styles.container}>
       <Text style={{ fontSize: 30 }}>Selam</Text>
