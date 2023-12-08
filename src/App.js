@@ -4,38 +4,57 @@ import { NavigationContainer } from "@react-navigation/native";
 import Home from "./pages/Home";
 import { Button, Text } from "react-native-paper";
 import { AppBarContext } from "./contexts/AppBarContext";
+import { ModalContext } from "./contexts/ModalContext";
 import { useMemo, useState } from "react";
 import AppbarHeader from "./components/AppbarHeader";
 import AppbarNavigator from "./components/AppbarNavigator";
+import ModalMenu from "./components/ModalMenu";
+import usePreferences from "./contexts/usePreferences";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [showHeader, setShowHeader] = useState(true);
-  const [showNavigator, setShowNavigator] = useState(true);
-  const [headerContent, setHeaderContent] = useState(
-    <Text style={{ fontSize: 40, fontWeight: "500" }}>BENBUY</Text>
-  );
-  const [navigatorContent, setNavigatorContent] = useState(
-    <Button mode="contained" textColor="black">
-      Test
-    </Button>
+  // const [showHeader, setShowHeader] = useState(true);
+  // const [showNavigator, setShowNavigator] = useState(true);
+  const [visible, setVisible] = useState(false);
+  const [content, setContent] = useState([
+    { label: "Test", onPress: () => alert("zaa") },
+  ]);
+  // const [headerContent, setHeaderContent] = useState(
+  //   <Text style={{ fontSize: 40, fontWeight: "500" }}>BENBUY</Text>
+  // );
+  // const [navigatorContent, setNavigatorContent] = useState(
+  //   <Button mode="contained" textColor="black">
+  //     Test
+  //   </Button>
+  // );
+
+  const modal = useMemo(
+    () => ({
+      visible,
+      setVisible,
+      content,
+      setContent,
+    }),
+    [visible, content]
   );
 
-  const appbar = useMemo(
-    () => ({
-      showHeader,
-      showNavigator,
-      setShowHeader,
-      setShowNavigator,
-      setHeaderContent,
-      setNavigatorContent,
-    }),
-    [showHeader, showNavigator, headerContent, navigatorContent]
-  );
+  // const appbar = useMemo(
+  //   () => ({
+  //     showHeader,
+  //     showNavigator,
+  //     setShowHeader,
+  //     setShowNavigator,
+  //     setHeaderContent,
+  //     setNavigatorContent,
+  //   }),
+  //   [showHeader, showNavigator, headerContent, navigatorContent]
+  // );
   return (
-    <AppBarContext.Provider value={appbar}>
-      <AppbarHeader show={showHeader} content={headerContent} />
+    // <AppBarContext.Provider value={appbar}>
+    // <AppbarHeader show={showHeader} content={headerContent} />
+
+    <ModalContext.Provider value={modal}>
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
@@ -45,8 +64,10 @@ export default function App() {
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Registration" component={Registration} />
         </Stack.Navigator>
+        <ModalMenu />
       </NavigationContainer>
-      <AppbarNavigator show={showNavigator} content={navigatorContent} />
-    </AppBarContext.Provider>
+    </ModalContext.Provider>
+    // <AppbarNavigator show={showNavigator} content={navigatorContent} />
+    // </AppBarContext.Provider>
   );
 }

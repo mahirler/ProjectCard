@@ -35,6 +35,7 @@ const darkTheme = {
     textColor: "white",
     backgroundColor: "#191919",
     iconColor: "white",
+    modalWindow: "grey",
   },
 };
 
