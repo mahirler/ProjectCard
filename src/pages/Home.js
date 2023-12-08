@@ -1,17 +1,9 @@
 import { useState } from "react";
 import { View, StyleSheet, Dimensions, Alert } from "react-native";
-import {
-  Gesture,
-  GestureDetector,
-  GestureHandlerRootView,
+import { Gesture, GestureDetector, GestureHandlerRootView,
 } from "react-native-gesture-handler";
 import { Appbar, Button, Drawer, Modal, Text } from "react-native-paper";
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withSpring,
-  withTiming,
+import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withSpring, withTiming,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -152,7 +144,7 @@ export default function Home({ navigation }) {
             borderWidth: 3,
             borderRadius: 10,
           }}
-          onPress={() => navigation.navigate("Registration")}
+          onPress={() => navigation.navigate("SignUp")}
         />
         <Appbar.Action icon="cash-refund" color="black" size={45} />
       </Appbar>
