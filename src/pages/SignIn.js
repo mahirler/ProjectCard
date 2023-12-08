@@ -7,7 +7,7 @@ import { SignUpValidationSchema } from "../validations/SignUpValidation";
 import UnderlinedText from "../components/UnderlinedText";
 import { SubmitButton, NavigateHomeButton } from "../components/form/Buttons";
 
-export default function SignUp({ navigation }) {
+export default function SignIn({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const theme = useTheme();
 
@@ -65,12 +65,13 @@ export default function SignUp({ navigation }) {
     }, 1000);
   }
 
-  const initialValues = {email: "",name:"",phoneNumber:"",password:"", confirmPassword:"",}
+
+  const initialValues = {name:"",password:"",}
 
   return (
     <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
     <View style={styles.container}>
-      <Text style={{ fontSize: 30, marginBottom:30, }}>Registration Form</Text>
+      <Text style={{ fontSize: 30, marginBottom:30, }}>Sign In Form</Text>
       <Formik
         validationSchema={SignUpValidationSchema}
         initialValues={initialValues}
@@ -85,39 +86,21 @@ export default function SignUp({ navigation }) {
             />
             <Field
             component={CustomInput}
-            name="email"
-            label="Email"
-            keyboardType="email-address"
-            />
-            <Field
-            component={CustomInput}
-            name="phoneNumber"
-            label="PhoneNumber"
-            keyboardType="numeric"
-            />
-            <Field
-            component={CustomInput}
             name="password"
             label="Password"
             secureTextEntry
             />
-            <Field
-            component={CustomInput}
-            name="confirmPassword"
-            label="Confirm Password"
-            secureTextEntry
-            />
 
-        <View style={styles.navigationTextContainer}>
-              <Text >You have an account? </Text>
+            <View style={styles.navigationTextContainer}>
+              <Text >Do not have an account? </Text>
               <UnderlinedText 
-                style={styles.signInText.underlineColor} textStyle={styles.signInText.textStyle} onPress={() => navigation.navigate("SignIn")}>
-                  Sign In
+                style={styles.signInText.underlineColor} textStyle={styles.signInText.textStyle} onPress={() => navigation.navigate("SignUp")}>
+                  Sign Up
               </UnderlinedText>
             </View>
 
             <View style={styles.buttonContainer}>
-              <SubmitButton handleSubmit={handleSubmit} loading={isLoading}>Sign Up</SubmitButton>
+              <SubmitButton handleSubmit={handleSubmit} loading={isLoading}>Sign In</SubmitButton>
               <NavigateHomeButton navigation={navigation}/>
             </View>
           </>
