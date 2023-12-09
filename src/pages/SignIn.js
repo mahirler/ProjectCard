@@ -1,12 +1,13 @@
-import { View, StyleSheet, Keyboard, TouchableWithoutFeedback, ActivityIndicator } from "react-native";
+import { View, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useState } from "react";
-import { Button, Text, useTheme } from "react-native-paper";
-import { Field, Form, Formik } from "formik";
+import { Text, useTheme } from "react-native-paper";
+import { Field, Formik } from "formik";
 import { CustomInput } from "../components/form/CustomInput";
 import { SignUpValidationSchema } from "../validations/SignUpValidation";
-import { Colors } from "react-native/Libraries/NewAppScreen";
+import UnderlinedText from "../components/UnderlinedText";
+import { SubmitButton, NavigateHomeButton } from "../components/form/Buttons";
 
-export default function SignUp({ navigation }) {
+export default function SignIn({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const theme = useTheme();
 
@@ -28,13 +29,21 @@ export default function SignUp({ navigation }) {
       justifyContent:"center",
       alignItems:"center",
     },
-    cancelButton:{
-      backgroundColor:"red",
+    navigationTextContainer:{
+      flexDirection:"row",
+      justifyContent:"center",
+      alignItems:"center",
+    },
+    signInText:{
+      textStyle :{
+        color:'#4b0082',
+      },
+      underlineColor:'#4b0082',
     },
     buttonContainer:{
       flexDirection:"row",
       justifyContent:"center",
-      marginTop:25,
+      marginTop:5,
       width:"90%",
     },
     red: {
@@ -56,13 +65,16 @@ export default function SignUp({ navigation }) {
     }, 1000);
   }
 
+
+  const initialValues = {name:"",password:"",}
+
   return (
     <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
     <View style={styles.container}>
-      <Text style={{ fontSize: 30, marginBottom:30, }}>Registration Form</Text>
+      <Text style={{ fontSize: 30, marginBottom:30, }}>Sign In Form</Text>
       <Formik
         validationSchema={SignUpValidationSchema}
-        initialValues={{email: "",name:"",phoneNumber:"",password:"", confirmPassword:"",}}
+        initialValues={initialValues}
         onSubmit={onSubmit}
       >
         {({handleSubmit}) => (
@@ -74,39 +86,22 @@ export default function SignUp({ navigation }) {
             />
             <Field
             component={CustomInput}
-            name="email"
-            label="Email"
-            keyboardType="email-address"
-            />
-            <Field
-            component={CustomInput}
-            name="phoneNumber"
-            label="PhoneNumber"
-            keyboardType="numeric"
-            />
-            <Field
-            component={CustomInput}
             name="password"
             label="Password"
             secureTextEntry
             />
-            <Field
-            component={CustomInput}
-            name="confirmPassword"
-            label="Confirm Password"
-            secureTextEntry
-            />
+
+            <View style={styles.navigationTextContainer}>
+              <Text >Do not have an account? </Text>
+              <UnderlinedText 
+                style={styles.signInText.underlineColor} textStyle={styles.signInText.textStyle} onPress={() => navigation.navigate("SignUp")}>
+                  Sign Up
+              </UnderlinedText>
+            </View>
 
             <View style={styles.buttonContainer}>
-              <View style={styles.signUpView} >
-                {isLoading 
-                ? <ActivityIndicator size="small" color="green" />
-                : <Button mode="contained" onPress={handleSubmit} type="Submit" >Sign Up</Button>
-                }
-                </View>
-              <Button style={[styles.signUpView, styles.cancelButton]} mode="contained" onPress={() => navigation.navigate("Home")}>
-                  Navigate Back
-                </Button>
+              <SubmitButton handleSubmit={handleSubmit} loading={isLoading}>Sign In</SubmitButton>
+              <NavigateHomeButton navigation={navigation}/>
             </View>
           </>
         )}

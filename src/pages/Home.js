@@ -71,7 +71,7 @@ export default function Home({ navigation }) {
       label: "Güvenli Çıkış",
       icon: "logout",
       onPress: () => {
-        navigation.navigate("Registration");
+        navigation.navigate("SignUpFirstPart");
         setVisible(false);
       },
     },

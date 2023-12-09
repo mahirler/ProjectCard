@@ -1,5 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import SignUp from "./pages/SignUp";
+import SignUpFirstPart from "./pages/SignUpFirstPart";
+import SignUpSecondPart from "./pages/SignUpSecondPart";
+import SignIn from "./pages/SignIn";
 import { NavigationContainer } from "@react-navigation/native";
 import Home from "./pages/Home";
 import { Button, Text } from "react-native-paper";
@@ -65,9 +67,11 @@ export default function App() {
           initialRouteName="Home"
         >
           <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Registration" component={SignUp} />
           <Stack.Screen name="Test" component={Test} />
           <Stack.Screen name="CameraTest" component={CameraTest} />
+          <Stack.Screen name="SignUpFirstPart" component={SignUpFirstPart} />
+          <Stack.Screen name="SignUpSecondPart" component={SignUpSecondPart} />
+          <Stack.Screen name="SignIn" component={SignIn} />
         </Stack.Navigator>
         <ModalMenu />
       </NavigationContainer>
