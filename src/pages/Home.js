@@ -144,7 +144,7 @@ export default function Home({ navigation }) {
             borderWidth: 3,
             borderRadius: 10,
           }}
-          onPress={() => navigation.navigate("SignUp")}
+          onPress={() => navigation.navigate("SignUpFirstPart")}
         />
         <Appbar.Action icon="cash-refund" color="black" size={45} />
       </Appbar>

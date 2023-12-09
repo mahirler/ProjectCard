@@ -4,10 +4,10 @@ import { Text, useTheme } from "react-native-paper";
 import { Field, Formik } from "formik";
 import { CustomInput } from "../components/form/CustomInput";
 import { SignUpValidationSchema } from "../validations/SignUpValidation";
-import UnderlinedText from "../components/UnderlinedText";
 import { SubmitButton, NavigateHomeButton } from "../components/form/Buttons";
+import { PasswordInput } from "../components/form/PasswordInput";
 
-export default function SignUp({ navigation }) {
+export default function SignUpSecondPart({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const theme = useTheme();
 
@@ -15,7 +15,7 @@ export default function SignUp({ navigation }) {
     container: {
       flex : 1,
       justifyContent : "center",
-      backgroundColor: theme.colors.background,
+      backgroundColor: "white",
       alignItems: "center",
     },
     signUpView:{
@@ -33,21 +33,36 @@ export default function SignUp({ navigation }) {
       flexDirection:"row",
       justifyContent:"center",
       alignItems:"center",
+      marginTop:15
     },
     signInText:{
-      textStyle :{
-        color:'#4b0082',
+      link:{
+        color:'black',
+        fontWeight:"bold"
       },
-      underlineColor:'#4b0082',
+      phrase:{
+        color:"gray",
+        fontWeight:"bold"
+      }
     },
     buttonContainer:{
       flexDirection:"row",
       justifyContent:"center",
-      marginTop:5,
+      marginTop:30,
       width:"90%",
     },
-    red: {
-      color: "red",
+    titleContainer:{
+      display:"flex",
+      flexDirection:"row",
+      width:"90%",
+      marginBottom: 20
+    },
+    titleText:{
+      fontSize: 30,
+      fontWeight:"bold"
+    },
+    errorText: {
+      color: "#A10000",
     },
   });
 
@@ -59,6 +74,7 @@ export default function SignUp({ navigation }) {
     console.log(values);
     handleDismissKeyboard();
     setIsLoading(true);
+    navigation.navigate("SignUpSecondPart")
 
     setTimeout(() => {
       setIsLoading(false);
@@ -70,55 +86,62 @@ export default function SignUp({ navigation }) {
   return (
     <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
     <View style={styles.container}>
-      <Text style={{ fontSize: 30, marginBottom:30, }}>Registration Form</Text>
+
+      <View style={styles.titleContainer}>
+        <NavigateHomeButton navigation={navigation}/>
+        <Text style={styles.titleText}>Kayıt Ol</Text>  
+      </View>
+
       <Formik
         validationSchema={SignUpValidationSchema}
         initialValues={initialValues}
         onSubmit={onSubmit}
       >
-        {({handleSubmit}) => (
+        {({handleSubmit, errors, touched}) => (
         <>
-            <Field
-            component={CustomInput}
-            name="name"
-            label="Name"
-            />
+           
             <Field
             component={CustomInput}
             name="email"
-            label="Email"
+            placeholder="Email"
             keyboardType="email-address"
             />
             <Field
             component={CustomInput}
             name="phoneNumber"
-            label="PhoneNumber"
+            placeholder="PhoneNumber"
             keyboardType="numeric"
             />
             <Field
-            component={CustomInput}
+            component={PasswordInput}
             name="password"
-            label="Password"
-            secureTextEntry
+            placeholder="Password"
             />
             <Field
-            component={CustomInput}
+            component={PasswordInput}
             name="confirmPassword"
-            label="Confirm Password"
-            secureTextEntry
+            placeholder="Confirm Password"
             />
 
-        <View style={styles.navigationTextContainer}>
-              <Text >You have an account? </Text>
-              <UnderlinedText 
-                style={styles.signInText.underlineColor} textStyle={styles.signInText.textStyle} onPress={() => navigation.navigate("SignIn")}>
-                  Sign In
-              </UnderlinedText>
+            {Object.keys(errors).map((fieldName) => (
+              touched[fieldName] && (
+                <Text key={fieldName} style={styles.errorText}>
+                  {errors[fieldName]}
+                </Text>
+              )
+            ))}
+            
+
+            <View style={styles.navigationTextContainer}>
+              <Text style={styles.signInText.phrase} >Bir hesaba sahipsen  </Text>
+              <Text 
+                style={styles.signInText.link} onPress={() => navigation.navigate("SignIn")}>
+                  Giriş Yap
+              </Text>
             </View>
 
             <View style={styles.buttonContainer}>
-              <SubmitButton handleSubmit={handleSubmit} loading={isLoading}>Sign Up</SubmitButton>
-              <NavigateHomeButton navigation={navigation}/>
+              <SubmitButton handleSubmit={handleSubmit} loading={isLoading}>Devam Et</SubmitButton>
             </View>
           </>
         )}

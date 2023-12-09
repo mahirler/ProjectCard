@@ -1,37 +1,38 @@
 import { StyleSheet } from "react-native";
-import { View, ActivityIndicator } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, IconButton } from "react-native-paper";
+
 
 const styles = StyleSheet.create({
 buttonStyle:{
-      minWidth:150,
-      backgroundColor: 'white',
-      borderWidth:2,
-      borderColor: 'black',
-      borderRadius:10,
-      borderColor: 'gray',
-      margin:10,
-      justifyContent:"center",
-      alignItems:"center",
+  style:{
+    minWidth:150,
+    width:"90%",
+    backgroundColor: 'black',
+    borderWidth:2,
+    borderRadius:30,
+    margin:10,
+    },
+  textColor:"white",
 },
-cancelButton:{
-  backgroundColor:"red",
+backButton:{
+  margin:0,
+  marginEnd:"25%"
 },
   });
 
   export const SubmitButton = ({handleSubmit, children, loading}) => (
-    <View style={styles.buttonStyle} >
-      {loading 
-      ? <ActivityIndicator size="small" color="green" />
-      : <Button mode="contained" onPress={handleSubmit} type="Submit" >{children}</Button>
-      }
-    </View>
+    <Button
+     mode="contained" {...styles.buttonStyle}
+     onPress={handleSubmit} type="Submit"
+     loading={loading}
+     >
+      {children}
+    </Button>
   )
 
   export const NavigateHomeButton = ({navigation}) => (
-    <Button 
-    style={[styles.buttonStyle, styles.cancelButton]}
-    mode="contained" onPress={() => navigation.navigate("Home")}>
-      Home
-    </Button>
-  )
+    <IconButton 
+    iconColor="black" icon="arrow-left" size={25} style={styles.backButton} 
+    onPress={() => navigation.navigate("Home")}
+    />
+ )
