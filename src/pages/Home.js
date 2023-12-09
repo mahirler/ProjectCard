@@ -1,169 +1,83 @@
-import { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
-import {
-  Gesture,
-  GestureDetector,
-  GestureHandlerRootView,
-  ScrollView,
-} from "react-native-gesture-handler";
+import { useContext, useState } from "react";
+import { View, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Appbar, Button, Surface, Switch, Text } from "react-native-paper";
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-  withTiming,
-} from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import usePreferences from "../contexts/usePreferences";
-import { AppBarContext } from "../contexts/AppBarContext";
-import { useIsFocused } from "@react-navigation/native";
 import AppbarHeader from "../components/AppbarHeader";
 import AppbarNavigator from "../components/AppbarNavigator";
-import ModalMenu from "../components/ModalMenu";
 import { ModalContext } from "../contexts/ModalContext";
+import { Skeleton } from "moti/skeleton";
 
 export default function Home({ navigation }) {
   const { toggleTheme, isThemeDark, theme } = usePreferences();
   const { setVisible, setContent } = useContext(ModalContext);
-  // const isFocused = useIsFocused();
 
   const MenuModal = [
     {
-      label: "rifki",
-      onPress: () => {
-        console.log("selam");
-      },
+      label: "Ayarlar",
+      icon: "cog-outline",
+      onPress: () => {},
+    },
+    {
+      label: "Ücretler ve Kampanyalar",
+      icon: "cash-multiple",
+      onPress: () => {},
+    },
+    {
+      label: "Destek Merkezi",
+      icon: "lifebuoy",
+      onPress: () => {},
+    },
+    {
+      label: "SSS",
+      icon: "forum",
+      onPress: () => {},
+    },
+    {
+      label: "Cashback",
+      icon: "cash-refund",
+      onPress: () => {},
     },
   ];
 
   const ProfileModal = [
     {
-      label: "deneme",
+      label: "Profil Düzenle",
+      icon: "account-edit-outline",
+      onPress: () => {},
+    },
+    {
+      label: "Arkadaşlar",
+      icon: "account-group-outline",
+      onPress: () => {},
+    },
+    {
+      label: "Hesap Detayları",
+      icon: "briefcase-account-outline",
+      onPress: () => {},
+    },
+    {
+      label: "Arkadaşını Davet Et",
+      icon: "account-plus-outline",
+      onPress: () => {},
+    },
+    {
+      label: "Hesap Hareketleri",
+      icon: "account-clock-outline",
+      onPress: () => {},
+    },
+    {
+      label: "Güvenli Çıkış",
+      icon: "logout",
       onPress: () => {
-        console.log("selam");
+        navigation.navigate("Registration");
+        setVisible(false);
       },
     },
   ];
 
-  const [visibleMenu, setVisibleMenu] = useState(false);
-  const [visibleProfile, setVisibleProfile] = useState(false);
   const { bottom } = useSafeAreaInsets();
-
-  // const {
-  //   setShowHeader,
-  //   setShowNavigator,
-  //   setHeaderContent,
-  //   setNavigatorContent,
-  // } = useContext(AppBarContext);
-
-  // useEffect(() => {
-  //   if (isFocused) {
-  //     setShowHeader(true);
-  //     setShowNavigator(true);
-  //     setHeaderContent(() => {
-  //       return (
-  //         <>
-  //           <Appbar.Action
-  //             icon="view-headline"
-  //             color={theme.colors.iconColor}
-  //             rippleColor="rgba(0,0,0,0)"
-  //             size={30}
-  //             onPress={() => {
-  //               setVisible(!visible);
-  //               handlePress();
-  //             }}
-  //           />
-  //           <Appbar.Action
-  //             icon="bell"
-  //             color={theme.colors.iconColor}
-  //             size={30}
-  //           />
-  //           <Text style={{ fontSize: 40, fontWeight: "500" }}>BENBUY</Text>
-  //           <Appbar.Action
-  //             icon="magnify"
-  //             color={theme.colors.iconColor}
-  //             size={30}
-  //           />
-  //           <Appbar.Action
-  //             icon="account-circle-outline"
-  //             color={theme.colors.iconColor}
-  //             onPress={() => {
-  //               alert("This is an alert!");
-  //             }}
-  //             size={30}
-  //           />
-  //         </>
-  //       );
-  //     });
-
-  //     setNavigatorContent(
-  //       <>
-  //         <View
-  //           style={{
-  //             display: "flex",
-  //             width: 400,
-  //             flexDirection: "row",
-  //             justifyContent: "space-around",
-  //             alignItems: "center",
-  //           }}
-  //         >
-  //           <Appbar.Action
-  //             icon="chart-pie"
-  //             color={theme.colors.iconColor}
-  //             size={45}
-  //           />
-  //           <Surface
-  //             style={{
-  //               backgroundColor: theme.colors.backgroundColor,
-  //               borderRadius: 10,
-  //               marginBottom: bottom,
-  //             }}
-  //             elevation={5}
-  //           >
-  //             <Appbar.Action
-  //               icon="qrcode"
-  //               color={theme.colors.iconColor}
-  //               rippleColor="rgba(0,0,0,0)"
-  //               size={75}
-  //               onPress={() => navigation.navigate("Registration")}
-  //             />
-  //           </Surface>
-  //           <Appbar.Action
-  //             icon="cash-refund"
-  //             color={theme.colors.iconColor}
-  //             size={45}
-  //           />
-  //         </View>
-  //       </>
-  //     );
-  //   }
-  // }, [theme, isFocused]);
-  const pressed = useSharedValue(false);
-  const offsetX = useSharedValue(0);
-  const offsetY = useSharedValue(0);
-
-  const pan = Gesture.Pan()
-    .onBegin(() => {
-      pressed.value = true;
-    })
-    .onChange((event) => {
-      offsetX.value = event.translationX;
-      offsetY.value = event.translationY;
-    })
-    .onFinalize(() => {
-      offsetY.value = withSpring(0);
-      offsetX.value = withSpring(0);
-      pressed.value = false;
-    });
-
-  const animatedStyles = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: offsetX.value },
-      { translateY: offsetY.value },
-      { scale: withTiming(pressed.value ? 1.2 : 1) },
-    ],
-    backgroundColor: pressed.value ? "#FFE04B" : "#b58df1",
-  }));
 
   const styles = StyleSheet.create({
     container: {
@@ -177,6 +91,11 @@ export default function Home({ navigation }) {
       width: 120,
       backgroundColor: "#b58df1",
       borderRadius: 20,
+    },
+    moneyButtons: {
+      width: 150,
+      height: 60,
+      justifyContent: "center",
     },
   });
 
@@ -197,7 +116,7 @@ export default function Home({ navigation }) {
               }}
             />
             <Appbar.Action
-              icon="bell"
+              icon="bell-outline"
               color={theme.colors.iconColor}
               size={30}
             />
@@ -220,12 +139,78 @@ export default function Home({ navigation }) {
           </>
         }
       />
-      <View style={styles.container}>
-        <GestureDetector gesture={pan}>
-          <Animated.View style={[styles.box, animatedStyles]} />
-        </GestureDetector>
-        <Text style={{ color: theme.colors.textColor }}>Home Page</Text>
-        <Switch color="red" value={isThemeDark} onValueChange={toggleTheme} />
+      <View
+        style={[
+          styles.container,
+          {
+            flexDirection: "column",
+            justifyContent: "space-around",
+          },
+        ]}
+      >
+        <Text style={{ fontSize: 80, fontWeight: "bold" }}>30,45 TL</Text>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-around",
+            width: 400,
+          }}
+        >
+          <Button
+            mode="outlined"
+            textColor={theme.colors.textColor}
+            style={styles.moneyButtons}
+            labelStyle={{ fontSize: 20, fontWeight: "bold" }}
+          >
+            YATIR
+          </Button>
+          <Button
+            style={[
+              styles.moneyButtons,
+              { backgroundColor: isThemeDark ? "white" : "black" },
+            ]}
+            mode="contained"
+            textColor={isThemeDark ? "black" : "white"}
+            labelStyle={{ fontSize: 20, fontWeight: "bold" }}
+          >
+            ÇEK
+          </Button>
+        </View>
+        <Skeleton
+          show="true"
+          width={Dimensions.get("window").width - 40}
+          colorMode={isThemeDark ? "dark" : "light"}
+        >
+          <View
+            style={{
+              width: Dimensions.get("window").width - 40,
+              height: 300,
+              backgroundColor: "grey",
+              borderRadius: 20,
+            }}
+          >
+            <Switch
+              color="red"
+              value={isThemeDark}
+              onValueChange={toggleTheme}
+            />
+          </View>
+        </Skeleton>
+        <Skeleton
+          show="true"
+          width={Dimensions.get("window").width - 40}
+          colorMode={isThemeDark ? "dark" : "light"}
+        >
+          <View
+            style={{
+              width: Dimensions.get("window").width - 40,
+              height: 100,
+              backgroundColor: "grey",
+              borderRadius: 20,
+            }}
+          ></View>
+        </Skeleton>
       </View>
 
       <AppbarNavigator
@@ -259,7 +244,7 @@ export default function Home({ navigation }) {
                   color={theme.colors.iconColor}
                   rippleColor="rgba(0,0,0,0)"
                   size={75}
-                  onPress={() => navigation.navigate("Registration")}
+                  onPress={() => navigation.navigate("CameraTest")}
                 />
               </Surface>
               <Appbar.Action

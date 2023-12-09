@@ -20,7 +20,7 @@ const lightTheme = {
     textColor: "black",
     backgroundColor: "#f9f7f8",
     iconColor: "black",
-    modalWindow: "grey",
+    modalWindow: "#F2F1EB",
   },
 };
 

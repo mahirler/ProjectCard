@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Registration from "./pages/Registration";
+import SignUp from "./pages/SignUp";
 import { NavigationContainer } from "@react-navigation/native";
 import Home from "./pages/Home";
 import { Button, Text } from "react-native-paper";
@@ -10,6 +10,8 @@ import AppbarHeader from "./components/AppbarHeader";
 import AppbarNavigator from "./components/AppbarNavigator";
 import ModalMenu from "./components/ModalMenu";
 import usePreferences from "./contexts/usePreferences";
+import Test from "./pages/Test";
+import CameraTest from "./pages/CameraTest";
 
 const Stack = createNativeStackNavigator();
 
@@ -60,9 +62,12 @@ export default function App() {
           screenOptions={{
             headerShown: false,
           }}
+          initialRouteName="Home"
         >
           <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Registration" component={Registration} />
+          <Stack.Screen name="Registration" component={SignUp} />
+          <Stack.Screen name="Test" component={Test} />
+          <Stack.Screen name="CameraTest" component={CameraTest} />
         </Stack.Navigator>
         <ModalMenu />
       </NavigationContainer>
