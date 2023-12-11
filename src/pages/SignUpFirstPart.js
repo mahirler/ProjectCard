@@ -1,11 +1,13 @@
 import { View, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useState } from "react";
-import { Text, useTheme } from "react-native-paper";
+import { Appbar, Text, useTheme, } from "react-native-paper";
+import { StatusBar } from "expo-status-bar";
 import { Field, Formik } from "formik";
 import { CustomInput } from "../components/form/CustomInput";
 import { SignUpValidationSchema } from "../validations/SignUpValidation";
 import { SubmitButton, NavigateHomeButton } from "../components/form/Buttons";
 import { PasswordInput } from "../components/form/PasswordInput";
+import { ProgressSteps, ProgressStep } from "react-native-progress-steps";
 
 export default function SignUpFirstPart({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -51,15 +53,10 @@ export default function SignUpFirstPart({ navigation }) {
       marginTop:30,
       width:"90%",
     },
-    titleContainer:{
-      display:"flex",
-      flexDirection:"row",
-      width:"90%",
-      marginBottom: 20
-    },
     titleText:{
       fontSize: 30,
-      fontWeight:"bold"
+      fontWeight:"bold",
+      marginBottom:30
     },
     errorText: {
       color: "#A10000",
@@ -88,10 +85,7 @@ export default function SignUpFirstPart({ navigation }) {
     <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
     <View style={styles.container}>
 
-      <View style={styles.titleContainer}>
-        <NavigateHomeButton navigation={navigation}/>
         <Text style={styles.titleText}>Kayıt Ol</Text>  
-      </View>
 
       <Formik
         validationSchema={SignUpValidationSchema}
@@ -159,7 +153,6 @@ export default function SignUpFirstPart({ navigation }) {
           </>
         )}
       </Formik>
-     
     </View>
     </TouchableWithoutFeedback>
 
