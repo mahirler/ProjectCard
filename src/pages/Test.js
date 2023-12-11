@@ -1,70 +1,34 @@
 import React from "react";
-import { Pressable, StyleSheet, View, Text } from "react-native";
-import { Camera, CameraType } from "expo-camera";
-import {
-  Gesture,
-  GestureDetector,
-  GestureHandlerRootView,
-} from "react-native-gesture-handler";
-import { Button } from "react-native-paper";
+import { StyleSheet, View } from "react-native";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
-  withSpring,
-  withDecay,
+  withTiming,
+  withRepeat,
+  interpolate,
 } from "react-native-reanimated";
 
-const INITIAL_OFFSET = 110;
-const SIZE = 160;
-const MARGIN = 30;
-const LEFT_BOUNDARY = 330;
-const RIGHT_BOUNDARY = -330;
-
-const items = [
-  { color: "#FFE780" },
-  { color: "#87CCE8" },
-  { color: "#FFA3A1" },
-  { color: "#B1DFD0" },
-];
-
 export default function App() {
-  const offset = useSharedValue(INITIAL_OFFSET);
-  const Index = useSharedValue(0);
+  const offset = useSharedValue(200);
 
   const animatedStyles = useAnimatedStyle(() => ({
+    // highlight-next-line
+    opacity: interpolate(offset.value, [-200, 200], [1, 0]),
     transform: [{ translateX: offset.value }],
   }));
 
-  const pan = Gesture.Pan()
-
-    .onChange((event) => {
-      offset.value += event.changeX;
-      //   console.log("Offset %d", offset.value);
-    })
-    .onFinalize(() => {
-      if (offset.value > 110 - 220 * Index.value) {
-        Index.value--;
-        offset.value = withSpring(110 - 220 * Index.value);
-      } else {
-        Index.value++;
-        offset.value = withSpring(110 - 220 * Index.value);
-      }
-      console.log(Index.value);
-    });
+  React.useEffect(() => {
+    offset.value = withRepeat(
+      withTiming(-offset.value, { duration: 1500 }),
+      -1,
+      true
+    );
+  }, []);
 
   return (
-    <GestureHandlerRootView style={styles.container}>
-      <GestureDetector gesture={pan}>
-        <Animated.View style={[styles.row, animatedStyles]}>
-          {items.map((item) => (
-            <View
-              key={item.color}
-              style={{ ...styles.box, backgroundColor: item.color }}
-            />
-          ))}
-        </Animated.View>
-      </GestureDetector>
-    </GestureHandlerRootView>
+    <View style={styles.container}>
+      <Animated.View style={[styles.box, animatedStyles]} />
+    </View>
   );
 }
 
@@ -72,48 +36,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    position: "relative",
-    marginVertical: 64,
-    overflow: "hidden",
-  },
-  buttonWrapper: {
-    position: "absolute",
-    width: SIZE,
-    zIndex: 1,
+    justifyContent: "center",
+    height: "100%",
   },
   box: {
-    height: SIZE,
-    width: SIZE,
-    borderRadius: 5,
-    marginHorizontal: MARGIN,
-  },
-  row: {
-    flexDirection: "row",
-  },
-  button: {
-    position: "absolute",
-    width: SIZE / 3,
-    height: SIZE / 3,
-    borderRadius: SIZE,
-    backgroundColor: "#ccc",
-    borderColor: "#fff",
-    borderWidth: 4,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    userSelect: "none",
-    top: 58,
-  },
-  buttonItem: {
-    color: "#666",
-    fontSize: 30,
-    fontWeight: "bold",
-    paddingBottom: 2,
-  },
-  previous: {
-    left: -30,
-  },
-  next: {
-    right: -30,
+    height: 120,
+    width: 120,
+    backgroundColor: "#b58df1",
+    borderRadius: 20,
   },
 });

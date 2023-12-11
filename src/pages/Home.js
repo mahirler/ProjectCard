@@ -8,6 +8,9 @@ import AppbarHeader from "../components/AppbarHeader";
 import AppbarNavigator from "../components/AppbarNavigator";
 import { ModalContext } from "../contexts/ModalContext";
 import { Skeleton } from "moti/skeleton";
+import Test from "./Test";
+import ContentSlider from "../components/ContentSlider.";
+import LastExpenses from "../components/LastExpenses.";
 
 export default function Home({ navigation }) {
   const { toggleTheme, isThemeDark, theme } = usePreferences();
@@ -17,7 +20,10 @@ export default function Home({ navigation }) {
     {
       label: "Ayarlar",
       icon: "cog-outline",
-      onPress: () => {},
+      onPress: () => {
+        navigation.navigate("Settings");
+        setVisible(false);
+      },
     },
     {
       label: "Ücretler ve Kampanyalar",
@@ -77,7 +83,83 @@ export default function Home({ navigation }) {
     },
   ];
 
-  const { bottom } = useSafeAreaInsets();
+  const sliderContent = [
+    {
+      Text: "Hello World",
+      Width: 350,
+    },
+    {
+      Text: "Deneme",
+      Width: 350,
+    },
+    {
+      Text: "12345",
+      Width: 350,
+    },
+    {
+      Text: "Hello World",
+      Width: 350,
+    },
+    {
+      Text: "Hello World",
+      Width: 350,
+    },
+    {
+      Text: "Hello World",
+      Width: 350,
+    },
+    {
+      Text: "Hello World",
+      Width: 350,
+    },
+    {
+      Text: "Rifki",
+      Width: 350,
+    },
+  ];
+
+  const expensesContent = [
+    {
+      explain: "Harcama açıklaması",
+      amount: -50,
+      date: "15 Kasım 2023 23:00",
+    },
+    {
+      explain: "Harçlık",
+      amount: 1000,
+      date: "15 Kasım 2023 22:39",
+    },
+    {
+      explain: "SAU KAFE",
+      amount: -25.25,
+      date: "07 Temmuz 2023 16:53",
+    },
+    {
+      explain: "NAVIDRES",
+      amount: "-49.90",
+      date: "15 Eylül 2022 07:55",
+    },
+    {
+      explain: "Harcama açıklaması",
+      amount: -50,
+      date: "14 Ağustos 2022 07:55",
+    },
+    {
+      explain: "Harçlık",
+      amount: 1000,
+      date: "14 Ağustos 2022 06:55",
+    },
+    {
+      explain: "SAU KAFE",
+      amount: -25.25,
+      date: "10 Kasım 2021 09:05",
+    },
+    {
+      explain: "NAVIDRES",
+      amount: "-49.90",
+      date: "9 Ekim 2021 20:05",
+    },
+  ];
 
   const styles = StyleSheet.create({
     container: {
@@ -177,7 +259,7 @@ export default function Home({ navigation }) {
             ÇEK
           </Button>
         </View>
-        <Skeleton
+        {/* <Skeleton
           show="true"
           width={Dimensions.get("window").width - 40}
           colorMode={isThemeDark ? "dark" : "light"}
@@ -189,28 +271,10 @@ export default function Home({ navigation }) {
               backgroundColor: "grey",
               borderRadius: 20,
             }}
-          >
-            <Switch
-              color="red"
-              value={isThemeDark}
-              onValueChange={toggleTheme}
-            />
-          </View>
-        </Skeleton>
-        <Skeleton
-          show="true"
-          width={Dimensions.get("window").width - 40}
-          colorMode={isThemeDark ? "dark" : "light"}
-        >
-          <View
-            style={{
-              width: Dimensions.get("window").width - 40,
-              height: 100,
-              backgroundColor: "grey",
-              borderRadius: 20,
-            }}
           ></View>
-        </Skeleton>
+        </Skeleton> */}
+        <LastExpenses content={expensesContent} />
+        <ContentSlider content={sliderContent} />
       </View>
 
       <AppbarNavigator
@@ -219,8 +283,7 @@ export default function Home({ navigation }) {
           <>
             <View
               style={{
-                display: "flex",
-                width: 400,
+                flex: 1,
                 flexDirection: "row",
                 justifyContent: "space-around",
                 alignItems: "center",
@@ -230,12 +293,18 @@ export default function Home({ navigation }) {
                 icon="chart-pie"
                 color={theme.colors.iconColor}
                 size={45}
+                style={{ margin: 0 }}
+              />
+              <Appbar.Action
+                icon="home-outline"
+                color={theme.colors.iconColor}
+                size={45}
+                style={{ margin: 0 }}
               />
               <Surface
                 style={{
                   backgroundColor: theme.colors.backgroundColor,
                   borderRadius: 10,
-                  marginBottom: bottom,
                 }}
                 elevation={5}
               >
@@ -243,14 +312,22 @@ export default function Home({ navigation }) {
                   icon="qrcode"
                   color={theme.colors.iconColor}
                   rippleColor="rgba(0,0,0,0)"
-                  size={75}
+                  size={50}
+                  style={{ margin: 0 }}
                   onPress={() => navigation.navigate("CameraTest")}
                 />
               </Surface>
               <Appbar.Action
+                icon="store-outline"
+                color={theme.colors.iconColor}
+                size={45}
+                style={{ margin: 0 }}
+              />
+              <Appbar.Action
                 icon="cash-refund"
                 color={theme.colors.iconColor}
                 size={45}
+                style={{ margin: 0 }}
               />
             </View>
           </>

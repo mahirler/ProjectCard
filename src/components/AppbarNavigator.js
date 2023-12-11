@@ -15,7 +15,7 @@ export default function AppbarNavigator({ show, content }) {
             width: Dimensions.get("window").width,
             display: "flex",
             justifyContent: "center",
-            height: 50 + bottom,
+            alignItems: "center",
           }}
           safeAreaInsets={{ bottom }}
         >
