@@ -23,7 +23,7 @@ import { ModalContext } from "../contexts/ModalContext";
 
 export default function ModalMenu() {
   const { visible, setVisible, content } = useContext(ModalContext);
-  const { theme } = usePreferences();
+  const { theme, isThemeDark } = usePreferences();
   const { bottom } = useSafeAreaInsets();
   const translateY = useSharedValue(0);
   const bgOpacity = useSharedValue(0);
@@ -43,25 +43,18 @@ export default function ModalMenu() {
   const stlyes = StyleSheet.create({
     button: {
       padding: 15,
-      backgroundColor: "black",
+      backgroundColor: isThemeDark ? "white" : "black",
       width: 380,
     },
   });
 
-  const onLayout = useCallback((event) => {
-    const { width, height } = event.nativeEvent.layout;
-    // console.log(height);
-  }, []);
-
   useEffect(() => {
     // console.info("useffect");
     if (visible) {
-      console.log("zaa");
       setbgV(visible);
       translateY.value -= 300;
       bgOpacity.value = withTiming(-300, {});
     } else {
-      console.log(translateY.value);
       translateY.value += 300;
       bgOpacity.value = withTiming(300, {}, (isfinished) => {
         if (isfinished) runOnJS(setbgV)(visible);
@@ -105,7 +98,6 @@ export default function ModalMenu() {
               marginBottom: 5,
               width: 380,
             }}
-            onLayout={onLayout}
           >
             {content.map((item, _index) => {
               return (
@@ -138,9 +130,10 @@ export default function ModalMenu() {
           </ScrollView>
           <Button
             mode="contained"
-            textColor="white"
+            textColor={isThemeDark ? "black" : "white"}
             onPress={() => setVisible(false)}
             style={stlyes.button}
+            labelStyle={{ fontWeight: "bold", fontSize: 15 }}
             rippleColor="rgba(0,0,0,0)"
           >
             VAZGEÇ

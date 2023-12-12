@@ -1,7 +1,21 @@
-import { useContext, useState } from "react";
-import { View, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
+import { useContext, useEffect, useState } from "react";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  Modal,
+} from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Appbar, Button, Surface, Switch, Text } from "react-native-paper";
+import {
+  Appbar,
+  Button,
+  IconButton,
+  Searchbar,
+  Surface,
+  Switch,
+  Text,
+} from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import usePreferences from "../contexts/usePreferences";
 import AppbarHeader from "../components/AppbarHeader";
@@ -11,10 +25,18 @@ import { Skeleton } from "moti/skeleton";
 import Test from "./Test";
 import ContentSlider from "../components/ContentSlider.";
 import LastExpenses from "../components/LastExpenses.";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 
 export default function Home({ navigation }) {
   const { toggleTheme, isThemeDark, theme } = usePreferences();
   const { setVisible, setContent } = useContext(ModalContext);
+  const searBarWidth = useSharedValue(0);
+  const [showSearch, setShowSearch] = useState(false);
+  const [showSendMoney, setShowSendMoney] = useState(false);
 
   const MenuModal = [
     {
@@ -181,43 +203,88 @@ export default function Home({ navigation }) {
     },
   });
 
+  const searchBarAnimatedStyle = useAnimatedStyle(() => ({
+    width: searBarWidth.value,
+  }));
+
+  useEffect(() => {
+    if (showSearch) searBarWidth.value = withTiming("80%");
+    else searBarWidth.value = withTiming("0%");
+  }, [showSearch]);
+
   return (
     <GestureHandlerRootView style={styles.container}>
       <AppbarHeader
         show={true}
         content={
           <>
-            <Appbar.Action
-              icon="view-headline"
-              color={theme.colors.iconColor}
-              rippleColor="rgba(0,0,0,0)"
-              size={30}
-              onPress={() => {
-                setContent(MenuModal);
-                setVisible(true);
-              }}
-            />
-            <Appbar.Action
-              icon="bell-outline"
-              color={theme.colors.iconColor}
-              size={30}
-            />
-            <Text style={{ fontSize: 40, fontWeight: "500" }}>BENBUY</Text>
-            <Appbar.Action
-              icon="magnify"
-              color={theme.colors.iconColor}
-              size={30}
-            />
-            <Appbar.Action
-              icon="account-circle-outline"
-              color={theme.colors.iconColor}
-              rippleColor="rgba(0,0,0,0)"
-              onPress={() => {
-                setContent(ProfileModal);
-                setVisible(true);
-              }}
-              size={30}
-            />
+            {!showSearch && (
+              <>
+                <Appbar.Action
+                  icon="view-headline"
+                  color={theme.colors.iconColor}
+                  rippleColor="rgba(0,0,0,0)"
+                  size={30}
+                  onPress={() => {
+                    setContent(MenuModal);
+                    setVisible(true);
+                  }}
+                />
+                <Appbar.Action
+                  icon="bell-outline"
+                  color={theme.colors.iconColor}
+                  size={30}
+                  onPress={() => navigation.navigate("Notifications")}
+                />
+                <Text style={{ fontSize: 40, fontWeight: "500" }}>BENBUY</Text>
+                <Appbar.Action
+                  icon="magnify"
+                  color={theme.colors.iconColor}
+                  rippleColor="rgba(0,0,0,0)"
+                  size={30}
+                  onPress={() => {
+                    setShowSearch(true);
+                  }}
+                />
+              </>
+            )}
+            <Animated.View
+              style={[
+                {
+                  display: "flex",
+                  flexDirection: "row-reverse",
+                },
+                searchBarAnimatedStyle,
+              ]}
+            >
+              {showSearch && (
+                <Searchbar
+                  style={{ width: "100%" }}
+                  placeholder="Ara"
+                  iconColor={!showSearch && theme.colors.backgroundColor}
+                />
+              )}
+              {showSearch && (
+                <IconButton
+                  icon={"close"}
+                  size={40}
+                  onPress={() => setShowSearch(false)}
+                  style={{ position: "absolute", top: 0, margin: 0 }}
+                />
+              )}
+            </Animated.View>
+            {!showSearch && (
+              <Appbar.Action
+                icon="account-circle-outline"
+                color={theme.colors.iconColor}
+                rippleColor="rgba(0,0,0,0)"
+                onPress={() => {
+                  setContent(ProfileModal);
+                  setVisible(true);
+                }}
+                size={30}
+              />
+            )}
           </>
         }
       />
@@ -328,8 +395,33 @@ export default function Home({ navigation }) {
                 color={theme.colors.iconColor}
                 size={45}
                 style={{ margin: 0 }}
+                onPress={() => setShowSendMoney(true)}
               />
             </View>
+            <Modal
+              visible={showSendMoney}
+              presentationStyle="formSheet"
+              animationType="slide"
+            >
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: theme.colors.backgroundColor,
+                }}
+              >
+                <IconButton
+                  icon="close"
+                  iconColor={theme.colors.iconColor}
+                  onPress={() => setShowSendMoney(false)}
+                  style={{ alignSelf: "flex-start" }}
+                />
+                <Text style={{ color: theme.colors.textColor }}>
+                  Test 12345
+                </Text>
+              </View>
+            </Modal>
           </>
         }
       />

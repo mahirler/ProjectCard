@@ -1,12 +1,14 @@
-import { Icon, IconButton, Switch, Text } from "react-native-paper";
+import { IconButton } from "react-native-paper";
 import AppbarHeader from "../components/AppbarHeader";
-import { View } from "react-native";
+import { Text, View } from "react-native";
+import React from "react";
 import usePreferences from "../contexts/usePreferences";
 
-export default function Settings({ navigation: { goBack } }) {
-  const { theme, isThemeDark, toggleTheme } = usePreferences();
+export default function Notifications({ navigation }) {
+  const { theme } = usePreferences();
+
   return (
-    <>
+    <React.Fragment>
       <AppbarHeader
         show={true}
         content={
@@ -17,15 +19,25 @@ export default function Settings({ navigation: { goBack } }) {
                 fontWeight: "bold",
                 width: "100%",
                 textAlign: "center",
+                color: theme.colors.textColor,
               }}
             >
-              Ayarlar
+              Bildirimler
             </Text>
             <IconButton
               icon="arrow-left"
               style={{ position: "absolute", left: 0, top: 0 }}
               size={40}
-              onPress={() => goBack()}
+              onPress={() => navigation.goBack()}
+            />
+            <IconButton
+              icon="cog-outline"
+              style={{
+                position: "absolute",
+                right: 0,
+                top: 0,
+              }}
+              size={40}
             />
           </>
         }
@@ -37,9 +49,7 @@ export default function Settings({ navigation: { goBack } }) {
           backgroundColor: theme.colors.backgroundColor,
           alignItems: "center",
         }}
-      >
-        <Switch color="red" value={isThemeDark} onValueChange={toggleTheme} />
-      </View>
-    </>
+      ></View>
+    </React.Fragment>
   );
 }

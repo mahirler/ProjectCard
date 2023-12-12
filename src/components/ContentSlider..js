@@ -58,7 +58,6 @@ export default function ContentSlider({ content }) {
         offset.value >
         leftBoundary - slideOffset * Index.value + boxSize / 2
       ) {
-        console.log("burda");
         Index.value--;
         offset.value = withSpring(leftBoundary - slideOffset * Index.value);
       } else if (
@@ -69,7 +68,6 @@ export default function ContentSlider({ content }) {
         offset.value = withSpring(leftBoundary - slideOffset * Index.value);
       } else
         offset.value = withSpring(leftBoundary - slideOffset * Index.value);
-      console.log(Index.value);
     });
 
   return (

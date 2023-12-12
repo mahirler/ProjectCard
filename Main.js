@@ -35,12 +35,12 @@ const darkTheme = {
     textColor: "white",
     backgroundColor: "#191919",
     iconColor: "white",
-    modalWindow: "grey",
+    modalWindow: "#23272e",
   },
 };
 
 const Main = () => {
-  const [isThemeDark, setIsThemeDark] = useState(false);
+  const [isThemeDark, setIsThemeDark] = useState(true);
 
   let theme = isThemeDark ? darkTheme : lightTheme;
 

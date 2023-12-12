@@ -15,6 +15,7 @@ import usePreferences from "./contexts/usePreferences";
 import Test from "./pages/Test";
 import CameraTest from "./pages/CameraTest";
 import Settings from "./pages/Settings";
+import Notifications from "./pages/Notifications";
 
 const Stack = createNativeStackNavigator();
 
@@ -74,6 +75,7 @@ export default function App() {
           <Stack.Screen name="SignUpSecondPart" component={SignUpSecondPart} />
           <Stack.Screen name="SignIn" component={SignIn} />
           <Stack.Screen name="Settings" component={Settings} />
+          <Stack.Screen name="Notifications" component={Notifications} />
         </Stack.Navigator>
         <ModalMenu />
       </NavigationContainer>
