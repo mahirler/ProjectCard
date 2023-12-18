@@ -3,7 +3,7 @@ import { Divider } from "react-native-paper";
 import usePreferences from "../contexts/usePreferences";
 import React, { useEffect, useRef, useState } from "react";
 
-export default function LastExpenses({ content, height }) {
+export default function LastExpenses({ content, height, style }) {
   const { theme } = usePreferences();
   const baseBalance = useRef(1000);
 
@@ -13,12 +13,15 @@ export default function LastExpenses({ content, height }) {
 
   return (
     <View
-      style={{
-        height: height ? height : "70%",
-        width: Dimensions.get("window").width - 40,
-        borderRadius: 5,
-        overflow: "hidden",
-      }}
+      style={[
+        {
+          height: height ? height : "70%",
+          width: Dimensions.get("window").width - 40,
+          borderRadius: 5,
+          overflow: "hidden",
+        },
+        style,
+      ]}
     >
       <ScrollView
         style={{

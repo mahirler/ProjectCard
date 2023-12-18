@@ -354,7 +354,7 @@ export default function Home({ navigation }) {
         <View
           style={{
             alignItems: "center",
-            height: "auto",
+            height: "20%",
             justifyContent: "center",
           }}
         >
@@ -365,14 +365,13 @@ export default function Home({ navigation }) {
               width: "100%",
             }}
           >
-            637,09 TL
+            1537,09 TL
           </Text>
           <View
             style={{
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-around",
-              marginTop: 10,
             }}
           >
             <Button
@@ -417,7 +416,11 @@ export default function Home({ navigation }) {
             height: "80%",
           }}
         >
-          <LastExpenses content={expensesContent} height="75%" />
+          <LastExpenses
+            content={expensesContent}
+            height="75%"
+            style={{ marginTop: 10 }}
+          />
           <ContentSlider content={sliderContent} />
         </View>
       </View>

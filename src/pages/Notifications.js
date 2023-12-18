@@ -97,9 +97,8 @@ export default function Notifications({ navigation }) {
           <ScrollView style={{ width: "90%" }}>
             {content.map((item, _index) => {
               return (
-                <>
+                <React.Fragment key={_index}>
                   <View
-                    key={_index}
                     style={{
                       width: "100%",
                       minHeight: 100,
@@ -160,7 +159,7 @@ export default function Notifications({ navigation }) {
                     </View>
                   </View>
                   <Divider leftInset="true" />
-                </>
+                </React.Fragment>
               );
             })}
           </ScrollView>
