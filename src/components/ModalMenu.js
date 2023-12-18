@@ -63,7 +63,7 @@ export default function ModalMenu() {
   }, [visible]);
 
   return (
-    <GestureHandlerRootView>
+    <View>
       <View
         style={{
           position: "relative",
@@ -71,6 +71,20 @@ export default function ModalMenu() {
           alignItems: "center",
         }}
       >
+        {bgV && (
+          <Animated.View
+            style={[
+              {
+                width: Dimensions.get("window").width,
+                height: Dimensions.get("window").height,
+                position: "absolute",
+                bottom: 0,
+                backgroundColor: "rgba(0,0,0,0.5)",
+              },
+              backgroundAnimatedStyle,
+            ]}
+          />
+        )}
         <Animated.View
           style={[
             {
@@ -139,23 +153,7 @@ export default function ModalMenu() {
             VAZGEÇ
           </Button>
         </Animated.View>
-
-        {bgV && (
-          <Animated.View
-            style={[
-              {
-                width: Dimensions.get("window").width,
-                height: Dimensions.get("window").height,
-                position: "absolute",
-                bottom: 0,
-                zIndex: -1000,
-                backgroundColor: "rgba(0,0,0,0.5)",
-              },
-              backgroundAnimatedStyle,
-            ]}
-          />
-        )}
       </View>
-    </GestureHandlerRootView>
+    </View>
   );
 }

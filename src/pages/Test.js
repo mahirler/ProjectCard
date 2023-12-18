@@ -1,48 +1,16 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  withRepeat,
-  interpolate,
-} from "react-native-reanimated";
+import { useState } from "react";
+import { View } from "react-native";
+import MapView from "react-native-maps";
 
-export default function App() {
-  const offset = useSharedValue(200);
-
-  const animatedStyles = useAnimatedStyle(() => ({
-    // highlight-next-line
-    opacity: interpolate(offset.value, [-200, 200], [1, 0]),
-    transform: [{ translateX: offset.value }],
-  }));
-
-  React.useEffect(() => {
-    offset.value = withRepeat(
-      withTiming(-offset.value, { duration: 1500 }),
-      -1,
-      true
-    );
-  }, []);
+export default function Test() {
+  const [region, setRegion] = useState({
+    latitude: 37.78825,
+    longitude: -122.4324,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
 
   return (
-    <View style={styles.container}>
-      <Animated.View style={[styles.box, animatedStyles]} />
-    </View>
+    <MapView provider="google" region={region} onRegionChange={setRegion} />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100%",
-  },
-  box: {
-    height: 120,
-    width: 120,
-    backgroundColor: "#b58df1",
-    borderRadius: 20,
-  },
-});

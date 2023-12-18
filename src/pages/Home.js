@@ -1,19 +1,16 @@
 import { useContext, useEffect, useState } from "react";
+import { View, StyleSheet, Modal } from "react-native";
 import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-  Modal,
-} from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView,
+} from "react-native-gesture-handler";
 import {
   Appbar,
   Button,
   IconButton,
   Searchbar,
   Surface,
-  Switch,
   Text,
 } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -22,7 +19,6 @@ import AppbarHeader from "../components/AppbarHeader";
 import AppbarNavigator from "../components/AppbarNavigator";
 import { ModalContext } from "../contexts/ModalContext";
 import { Skeleton } from "moti/skeleton";
-import Test from "./Test";
 import ContentSlider from "../components/ContentSlider.";
 import LastExpenses from "../components/LastExpenses.";
 import Animated, {
@@ -31,12 +27,19 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
+import StarbucksLogo from "../../assets/brandIcons/starbucks.png";
+import BurgerKingLogo from "../../assets/brandIcons/burgerking.png";
+import GetirLogo from "../../assets/brandIcons/getir.png";
+import TrendyolLogo from "../../assets/brandIcons/trendyol.png";
+
 export default function Home({ navigation }) {
   const { toggleTheme, isThemeDark, theme } = usePreferences();
   const { setVisible, setContent } = useContext(ModalContext);
-  const searBarWidth = useSharedValue(0);
   const [showSearch, setShowSearch] = useState(false);
   const [showSendMoney, setShowSendMoney] = useState(false);
+
+  const pressed = useSharedValue(false);
+  const searBarWidth = useSharedValue(0);
 
   const MenuModal = [
     {
@@ -107,79 +110,117 @@ export default function Home({ navigation }) {
 
   const sliderContent = [
     {
-      Text: "Hello World",
+      Text: "Getir",
       Width: 350,
+      Icon: GetirLogo,
+      GiveBackShare: "%5",
+      NoColor: true,
+      Comment: "50TL ve üzeri alışverişlerde",
+      onPress: () => {
+        navigation.navigate("Refund");
+      },
     },
     {
-      Text: "Deneme",
+      Text: "Burger King",
       Width: 350,
+      GiveBackShare: "%10",
+      Icon: BurgerKingLogo,
     },
     {
-      Text: "12345",
+      Text: "Steam",
       Width: 350,
+      Icon: "steam",
+      GiveBackShare: "%10",
     },
     {
-      Text: "Hello World",
+      Text: "Trendyol",
       Width: 350,
+      Icon: TrendyolLogo,
+      GiveBackShare: "%20",
+      NoColor: true,
+      Comment: "250TL ve üzeri alışverişlerde",
     },
     {
-      Text: "Hello World",
+      Text: "Netflix",
       Width: 350,
+      Icon: "netflix",
+      GiveBackShare: "%30",
+      Comment: "Her ay 30TL ye kadar",
     },
     {
-      Text: "Hello World",
+      Text: "Starbucks",
       Width: 350,
+      Icon: StarbucksLogo,
+      GiveBackShare: "%5",
     },
     {
-      Text: "Hello World",
+      Text: "Coffy",
       Width: 350,
+      GiveBackShare: "%10",
     },
     {
-      Text: "Rifki",
+      Text: "Spotify",
       Width: 350,
+      Icon: "spotify",
+      GiveBackShare: "%55",
+      Comment: "Her ay 15TL ye kadar",
     },
   ];
 
   const expensesContent = [
     {
-      explain: "Harcama açıklaması",
+      explain: "Efe Dortluoğlu",
       amount: -50,
-      date: "15 Kasım 2023 23:00",
+      date: "15 Kasım 23:00",
+      type: "Para Transferi",
     },
     {
-      explain: "Harçlık",
-      amount: 1000,
-      date: "15 Kasım 2023 22:39",
+      explain: "Rıfkı Kesepara",
+      amount: 497,
+      date: "15 Kasım 22:39",
+      type: "Para Transferi",
+    },
+    {
+      explain: "Geri Ödeme",
+      amount: 23,
+      date: "15 Eylül 07:58",
+      type: "Market Alışverişi",
+    },
+    {
+      explain: "BİM",
+      amount: 230,
+      date: "15 Eylül 07:55",
+      type: "Market Alışverişi",
+    },
+    {
+      explain: "Zafer Bacaksız",
+      amount: -100.0,
+      date: "14 Ağustos 06:55",
+      type: "Para Transferi",
+    },
+    {
+      explain: "Geri Ödeme",
+      amount: 2,
+      date: "10 Kasım  09:07",
+      type: "Kafe Ödemesi",
     },
     {
       explain: "SAU KAFE",
-      amount: -25.25,
-      date: "07 Temmuz 2023 16:53",
+      amount: -20,
+      date: "10 Kasım  09:05",
+      type: "Kafe Ödemesi",
+    },
+    {
+      explain: "Geri Ödeme",
+      amount: 4.99,
+      date: "9 Ekim  20:07",
+      type: "Tekel Alışverişi",
     },
     {
       explain: "NAVIDRES",
-      amount: "-49.90",
-      date: "15 Eylül 2022 07:55",
-    },
-    {
-      explain: "Harcama açıklaması",
-      amount: -50,
-      date: "14 Ağustos 2022 07:55",
-    },
-    {
-      explain: "Harçlık",
-      amount: 1000,
-      date: "14 Ağustos 2022 06:55",
-    },
-    {
-      explain: "SAU KAFE",
-      amount: -25.25,
-      date: "10 Kasım 2021 09:05",
-    },
-    {
-      explain: "NAVIDRES",
-      amount: "-49.90",
-      date: "9 Ekim 2021 20:05",
+      amount: -49.9,
+      date: "9 Ekim  20:05",
+      type: "Tekel Alışverişi",
     },
   ];
 
@@ -197,15 +238,28 @@ export default function Home({ navigation }) {
       borderRadius: 20,
     },
     moneyButtons: {
-      width: 150,
+      width: 140,
       height: 60,
       justifyContent: "center",
+      marginHorizontal: 10,
     },
   });
 
   const searchBarAnimatedStyle = useAnimatedStyle(() => ({
     width: searBarWidth.value,
   }));
+
+  const qrCodeAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: withTiming(pressed.value ? 1.3 : 1) }],
+  }));
+
+  const tap = Gesture.Tap()
+    .onBegin(() => {
+      pressed.value = true;
+    })
+    .onFinalize(() => {
+      pressed.value = false;
+    });
 
   useEffect(() => {
     if (showSearch) searBarWidth.value = withTiming("80%");
@@ -297,34 +351,50 @@ export default function Home({ navigation }) {
           },
         ]}
       >
-        <Text style={{ fontSize: 80, fontWeight: "bold" }}>30,45 TL</Text>
         <View
           style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-around",
-            width: 400,
+            alignItems: "center",
+            height: "auto",
+            justifyContent: "center",
           }}
         >
-          <Button
-            mode="outlined"
-            textColor={theme.colors.textColor}
-            style={styles.moneyButtons}
-            labelStyle={{ fontSize: 20, fontWeight: "bold" }}
+          <Text
+            style={{
+              fontSize: 60,
+              fontWeight: "bold",
+              width: "100%",
+            }}
           >
-            YATIR
-          </Button>
-          <Button
-            style={[
-              styles.moneyButtons,
-              { backgroundColor: isThemeDark ? "white" : "black" },
-            ]}
-            mode="contained"
-            textColor={isThemeDark ? "black" : "white"}
-            labelStyle={{ fontSize: 20, fontWeight: "bold" }}
+            637,09 TL
+          </Text>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-around",
+              marginTop: 10,
+            }}
           >
-            ÇEK
-          </Button>
+            <Button
+              mode="outlined"
+              textColor={theme.colors.textColor}
+              style={styles.moneyButtons}
+              labelStyle={{ fontSize: 20, fontWeight: "bold" }}
+            >
+              YATIR
+            </Button>
+            <Button
+              style={[
+                styles.moneyButtons,
+                { backgroundColor: isThemeDark ? "white" : "black" },
+              ]}
+              mode="contained"
+              textColor={isThemeDark ? "black" : "white"}
+              labelStyle={{ fontSize: 20, fontWeight: "bold" }}
+            >
+              ÇEK
+            </Button>
+          </View>
         </View>
         {/* <Skeleton
           show="true"
@@ -340,12 +410,21 @@ export default function Home({ navigation }) {
             }}
           ></View>
         </Skeleton> */}
-        <LastExpenses content={expensesContent} />
-        <ContentSlider content={sliderContent} />
+        <View
+          style={{
+            justifyContent: "space-around",
+            alignItems: "center",
+            height: "80%",
+          }}
+        >
+          <LastExpenses content={expensesContent} height="75%" />
+          <ContentSlider content={sliderContent} />
+        </View>
       </View>
 
       <AppbarNavigator
         show={true}
+        style={{ height: 80 }}
         content={
           <>
             <View
@@ -368,30 +447,34 @@ export default function Home({ navigation }) {
                 size={45}
                 style={{ margin: 0 }}
               />
-              <Surface
-                style={{
-                  backgroundColor: theme.colors.backgroundColor,
-                  borderRadius: 10,
-                }}
-                elevation={5}
-              >
-                <Appbar.Action
-                  icon="qrcode"
-                  color={theme.colors.iconColor}
-                  rippleColor="rgba(0,0,0,0)"
-                  size={50}
-                  style={{ margin: 0 }}
-                  onPress={() => navigation.navigate("CameraTest")}
-                />
-              </Surface>
+              <GestureDetector gesture={tap}>
+                <Animated.View style={[qrCodeAnimatedStyle]}>
+                  <Surface
+                    style={{
+                      backgroundColor: theme.colors.backgroundColor,
+                      borderRadius: 10,
+                    }}
+                    elevation={5}
+                  >
+                    <Appbar.Action
+                      icon="qrcode"
+                      color={theme.colors.iconColor}
+                      rippleColor="rgba(0,0,0,0)"
+                      size={50}
+                      style={{ margin: 0 }}
+                      onPress={() => navigation.navigate("CameraTest")}
+                    />
+                  </Surface>
+                </Animated.View>
+              </GestureDetector>
               <Appbar.Action
-                icon="store-outline"
+                icon="map-marker-outline"
                 color={theme.colors.iconColor}
                 size={45}
                 style={{ margin: 0 }}
               />
               <Appbar.Action
-                icon="cash-refund"
+                icon="swap-horizontal"
                 color={theme.colors.iconColor}
                 size={45}
                 style={{ margin: 0 }}

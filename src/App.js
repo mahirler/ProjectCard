@@ -16,6 +16,7 @@ import Test from "./pages/Test";
 import CameraTest from "./pages/CameraTest";
 import Settings from "./pages/Settings";
 import Notifications from "./pages/Notifications";
+import Refund from "./pages/Refund";
 
 const Stack = createNativeStackNavigator();
 
@@ -76,6 +77,7 @@ export default function App() {
           <Stack.Screen name="SignIn" component={SignIn} />
           <Stack.Screen name="Settings" component={Settings} />
           <Stack.Screen name="Notifications" component={Notifications} />
+          <Stack.Screen name="Refund" component={Refund} />
         </Stack.Navigator>
         <ModalMenu />
       </NavigationContainer>

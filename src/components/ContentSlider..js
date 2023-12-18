@@ -1,19 +1,17 @@
 import React from "react";
-import { Pressable, StyleSheet, View, Text } from "react-native";
-import { Camera, CameraType } from "expo-camera";
-import {
-  Gesture,
-  GestureDetector,
-  GestureHandlerRootView,
-} from "react-native-gesture-handler";
-import { Button, IconButton } from "react-native-paper";
+import { StyleSheet, View, Text } from "react-native";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { Icon } from "react-native-paper";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
-  withDecay,
+  runOnJS,
 } from "react-native-reanimated";
 import usePreferences from "../contexts/usePreferences";
+import { TouchableOpacity } from "react-native";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const INITIAL_OFFSET = 110;
 const MARGIN = 10;
@@ -36,6 +34,7 @@ export default function ContentSlider({ content }) {
   const slideOffset = boxSize + MARGIN * 2;
   const { theme, isThemeDark } = usePreferences();
   const offset = useSharedValue(leftBoundary);
+  const [buttonDisabled, setDisabled] = useState(true);
   const Index = useSharedValue(0);
 
   const animatedStyles = useAnimatedStyle(() => ({
@@ -43,6 +42,7 @@ export default function ContentSlider({ content }) {
   }));
 
   const pan = Gesture.Pan()
+    .onBegin(() => runOnJS(setDisabled)(true))
     .onChange((event) => {
       offset.value += event.changeX;
     })
@@ -68,41 +68,81 @@ export default function ContentSlider({ content }) {
         offset.value = withSpring(leftBoundary - slideOffset * Index.value);
       } else
         offset.value = withSpring(leftBoundary - slideOffset * Index.value);
+      runOnJS(setDisabled)(false);
     });
 
   return (
-    <GestureHandlerRootView style={styles.container}>
-      <GestureDetector gesture={pan}>
-        <Animated.View style={[styles.row, animatedStyles]}>
-          {content.map((item, _index) => (
-            <View
-              key={_index}
+    // <GestureHandlerRootView style={styles.container}>
+    <GestureDetector gesture={pan}>
+      <Animated.View style={[styles.row, animatedStyles]}>
+        {content.map((item, _index) => (
+          <TouchableOpacity
+            key={_index}
+            style={{
+              ...styles.box,
+              width: item.Width,
+              borderWidth: 1,
+              borderRadius: 10,
+              borderColor: theme.colors.iconColor,
+              flexDirection: "row",
+              justifyContent: "space-around",
+            }}
+            // activeOpacity={1}
+            onPress={item.onPress}
+            disabled={buttonDisabled}
+          >
+            <Text
               style={{
-                ...styles.box,
-                // backgroundColor: theme.colors.iconColor,
-                width: item.Width,
-                borderWidth: 1,
-                borderRadius: 10,
-                borderColor: theme.colors.iconColor,
+                color: theme.colors.textColor,
+                fontWeight: "bold",
+                fontSize: 35,
+                // backgroundColor: "green",
               }}
             >
+              {item.GiveBackShare}
+            </Text>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                height: "100%",
+                width: "70%",
+                justifyContent: "flex-start",
+                // backgroundColor: "red",
+              }}
+            >
+              <Icon
+                source={item.Icon}
+                size={50}
+                color={!item.NoColor ? (isThemeDark ? "white" : "black") : {}}
+              />
               {/* <IconButton
                 icon="cursor-default-click-outline"
                 iconColor={theme.colors.primary}
                 size={70}
                 onPress={() => console.log("zaaa " + _index)}
               /> */}
-              <Button
-                textColor={isThemeDark ? "white" : "black"}
-                onPress={item.onPress}
-              >
-                {item.Text}
-              </Button>
+              <View style={{ flexDirection: "column" }}>
+                <Text
+                  style={{
+                    color: isThemeDark ? "white" : "black",
+                    fontSize: 35,
+                  }}
+                >
+                  {item.Text}
+                </Text>
+                {item.Comment && (
+                  <Text style={{ color: isThemeDark ? "white" : "black" }}>
+                    {item.Comment}
+                  </Text>
+                )}
+              </View>
             </View>
-          ))}
-        </Animated.View>
-      </GestureDetector>
-    </GestureHandlerRootView>
+          </TouchableOpacity>
+        ))}
+      </Animated.View>
+    </GestureDetector>
+    // </GestureHandlerRootView>
   );
 }
 

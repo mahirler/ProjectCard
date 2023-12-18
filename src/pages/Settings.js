@@ -13,7 +13,7 @@ export default function Settings({ navigation: { goBack } }) {
           <>
             <Text
               style={{
-                fontSize: 40,
+                fontSize: 30,
                 fontWeight: "bold",
                 width: "100%",
                 textAlign: "center",
@@ -24,7 +24,7 @@ export default function Settings({ navigation: { goBack } }) {
             <IconButton
               icon="arrow-left"
               style={{ position: "absolute", left: 0, top: 0 }}
-              size={40}
+              size={30}
               onPress={() => goBack()}
             />
           </>
