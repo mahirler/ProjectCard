@@ -8,7 +8,7 @@ import { SignUpValidationSchema } from "../validations/SignUpValidation";
 import { PasswordInput } from "../components/form/PasswordInput";
 import { SubmitButton, NavigateHomeButton } from "../components/form/Buttons";
 import { ProgressSteps, ProgressStep } from "react-native-progress-steps";
-import SignUpFirstPart from "./SignUpFirstPart";
+import SignUpFirstPart from "./SignUp";
 
 export const themeColor = '#1e1e1e';
 export const textColor = '#ffffffdd';
@@ -21,11 +21,17 @@ export default function SignIn({ navigation }) {
     safeAreaView: {
       flex: 1,
       backgroundColor:"white",
+      justifyContent:"center",
     },
     button: {
       backgroundColor: themeColor,
       paddingHorizontal: 16,
       paddingVertical: 8,
+      borderWidth:2,
+      borderRadius:30,
+      minWidth:100,
+      alignItems:"center",
+      alignContent:"center",
     },
     buttonText: {
       color: textColor,
@@ -75,27 +81,12 @@ export default function SignIn({ navigation }) {
       marginTop:5,
       width:"90%",
     },
-    red: {
-      color: "red",
+    errorText: {
+      color: "#A10000",
     },
   });
 
-  const handleDismissKeyboard = () => {
-    Keyboard.dismiss();
-  };
 
-  const onSubmit = (values)=>{
-    console.log(values);
-    handleDismissKeyboard();
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-  }
-
-
-  const initialValues = {name:"",password:"",}
 
   const progressSteps = {
     borderWidth: 3,
@@ -116,20 +107,11 @@ export default function SignIn({ navigation }) {
     nextBtnTextStyle: styles.buttonText,
     previousBtnTextStyle: styles.buttonText,
   };
-  // İlk sayfada Önceki butonunun boş olarak görüntülenmemesi için gizliyoruz
+
   const firstProgressStep = {
     ...progressStep,
     onPrevious: () => navigation.navigate("Home"),
-    previousBtnText: 'Geri',
-    renderPreviousButton: (state) => (
-      <TouchableOpacity
-        onPress={state.onPrevious}
-        disabled={state.disabled}
-        style={styles.button}
-      >
-        <Text style={styles.buttonText}>{state.previousBtnText}</Text>
-      </TouchableOpacity>
-    ),
+    previousBtnText: '< Geri',
   };
   
 
