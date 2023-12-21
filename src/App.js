@@ -17,6 +17,7 @@ import CameraTest from "./pages/CameraTest";
 import Settings from "./pages/Settings";
 import Notifications from "./pages/Notifications";
 import Refund from "./pages/Refund";
+import Map from "./pages/Map";
 
 const Stack = createNativeStackNavigator();
 
@@ -78,6 +79,7 @@ export default function App() {
           <Stack.Screen name="Settings" component={Settings} />
           <Stack.Screen name="Notifications" component={Notifications} />
           <Stack.Screen name="Refund" component={Refund} />
+          <Stack.Screen name="Map" component={Map} />
         </Stack.Navigator>
         <ModalMenu />
       </NavigationContainer>

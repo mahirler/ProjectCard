@@ -31,6 +31,7 @@ import StarbucksLogo from "../../assets/brandIcons/starbucks.png";
 import BurgerKingLogo from "../../assets/brandIcons/burgerking.png";
 import GetirLogo from "../../assets/brandIcons/getir.png";
 import TrendyolLogo from "../../assets/brandIcons/trendyol.png";
+import MoneyTransfer from "../components/MoneyTransfer";
 
 export default function Home({ navigation }) {
   const { toggleTheme, isThemeDark, theme } = usePreferences();
@@ -66,9 +67,12 @@ export default function Home({ navigation }) {
       onPress: () => {},
     },
     {
-      label: "Cashback",
+      label: "Geri Ödemeler",
       icon: "cash-refund",
-      onPress: () => {},
+      onPress: () => {
+        navigation.navigate("Refund");
+        setVisible(false);
+      },
     },
   ];
 
@@ -475,6 +479,7 @@ export default function Home({ navigation }) {
                 color={theme.colors.iconColor}
                 size={45}
                 style={{ margin: 0 }}
+                onPress={() => navigation.navigate("Map")}
               />
               <Appbar.Action
                 icon="swap-horizontal"
@@ -489,24 +494,7 @@ export default function Home({ navigation }) {
               presentationStyle="formSheet"
               animationType="slide"
             >
-              <View
-                style={{
-                  flex: 1,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  backgroundColor: theme.colors.backgroundColor,
-                }}
-              >
-                <IconButton
-                  icon="close"
-                  iconColor={theme.colors.iconColor}
-                  onPress={() => setShowSendMoney(false)}
-                  style={{ alignSelf: "flex-start" }}
-                />
-                <Text style={{ color: theme.colors.textColor }}>
-                  Test 12345
-                </Text>
-              </View>
+              <MoneyTransfer showSendMoney={setShowSendMoney} />
             </Modal>
           </>
         }

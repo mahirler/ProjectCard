@@ -17,16 +17,20 @@ export default function CameraTest({ navigation }) {
     navigation.navigate("Home");
   };
 
-  return (
-    <View style={styles.container}>
-      <BarCodeScanner
-        style={styles.camera}
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-      >
-        <Icon source="scan-helper" color="white" size={300} />
-      </BarCodeScanner>
-    </View>
-  );
+  const [permission, requesPermission] = Camera.useCameraPermissions();
+
+  if (permission)
+    return (
+      <View style={styles.container}>
+        <BarCodeScanner
+          style={styles.camera}
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        >
+          <Icon source="scan-helper" color="white" size={300} />
+        </BarCodeScanner>
+      </View>
+    );
+  else requesPermission();
 }
 
 const styles = StyleSheet.create({

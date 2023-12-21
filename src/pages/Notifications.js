@@ -3,9 +3,28 @@ import AppbarHeader from "../components/AppbarHeader";
 import { ScrollView, Text, View } from "react-native";
 import React, { useState } from "react";
 import usePreferences from "../contexts/usePreferences";
+import {
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView,
+} from "react-native-gesture-handler";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+} from "react-native-reanimated";
 
 export default function Notifications({ navigation }) {
   const { theme } = usePreferences();
+  const translateX = useSharedValue(0);
+
+  const pan = Gesture.Pan()
+    .onBegin(() => {})
+    .onChange((event) => {
+      translateX.value += event.changeX;
+    })
+    .onFinalize(() => {
+      console.log(translateX.value);
+    });
 
   const [content, setContent] = useState([
     {
@@ -53,7 +72,14 @@ export default function Notifications({ navigation }) {
   ]);
 
   return (
-    <React.Fragment>
+    <GestureHandlerRootView
+      style={{
+        flex: 1,
+        backgroundColor: theme.colors.backgroundColor,
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <AppbarHeader
         show={true}
         content={
@@ -96,68 +122,76 @@ export default function Notifications({ navigation }) {
         {content.length != 0 ? (
           <ScrollView style={{ width: "90%" }}>
             {content.map((item, _index) => {
+              const notificationAnimatedStyle = useAnimatedStyle(() => ({
+                transform: [{ translateX: translateX.value }],
+              }));
               return (
                 <React.Fragment key={_index}>
-                  <View
-                    style={{
-                      width: "100%",
-                      minHeight: 100,
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
-                    <View
-                      style={{
-                        width: 65,
-                        height: 65,
-                        backgroundColor: "grey",
-                        borderRadius: 7,
-                      }}
-                    />
-                    <View
-                      style={{
-                        marginLeft: 15,
-                        width: "75%",
-                        justifyContent: "space-between",
-                      }}
+                  <GestureDetector gesture={pan}>
+                    <Animated.View
+                      style={[
+                        {
+                          width: "100%",
+                          minHeight: 100,
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        },
+                        notificationAnimatedStyle,
+                      ]}
                     >
                       <View
                         style={{
-                          flexDirection: "row",
-                          alignItems: "center",
+                          width: 65,
+                          height: 65,
+                          backgroundColor: "grey",
+                          borderRadius: 7,
+                        }}
+                      />
+                      <View
+                        style={{
+                          marginLeft: 15,
+                          width: "75%",
                           justifyContent: "space-between",
                         }}
                       >
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 15,
+                              fontWeight: "bold",
+                              textAlign: "center",
+                              color: theme.colors.textColor,
+                            }}
+                          >
+                            {item.title}
+                          </Text>
+                          <Text
+                            style={{
+                              textAlign: "center",
+                              color: "grey",
+                            }}
+                          >
+                            {item.date}
+                          </Text>
+                        </View>
                         <Text
                           style={{
-                            fontSize: 15,
-                            fontWeight: "bold",
-                            textAlign: "center",
                             color: theme.colors.textColor,
+                            width: "100%",
                           }}
                         >
-                          {item.title}
-                        </Text>
-                        <Text
-                          style={{
-                            textAlign: "center",
-                            color: "grey",
-                          }}
-                        >
-                          {item.date}
+                          {item.detail}
                         </Text>
                       </View>
-                      <Text
-                        style={{
-                          color: theme.colors.textColor,
-                          width: "100%",
-                        }}
-                      >
-                        {item.detail}
-                      </Text>
-                    </View>
-                  </View>
+                    </Animated.View>
+                  </GestureDetector>
                   <Divider leftInset="true" />
                 </React.Fragment>
               );
@@ -177,6 +211,6 @@ export default function Notifications({ navigation }) {
           </Text>
         )}
       </View>
-    </React.Fragment>
+    </GestureHandlerRootView>
   );
 }
