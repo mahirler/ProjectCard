@@ -10,8 +10,8 @@ import { SignInValidationSchema } from "../validations/SignInValidations";
 import SubmitButton from "../components/form/SubmitButton";
 
 
-export const themeColor = '#1e1e1e';
-export const textColor = '#ffffffdd';
+export const themeColor = "#1e1e1e";
+export const textColor = "#ffffffdd";
 
 export default function SignUp({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -42,6 +42,80 @@ export default function SignUp({ navigation }) {
       alignItems:"center",
       marginTop:15
     },
+    signInText: {
+      link: {
+        color: "black",
+        fontWeight: "bold",
+      },
+      phrase: {
+        color: "gray",
+        fontWeight: "bold",
+      },
+    },
+    buttonContainer:{
+      flexDirection:"row",
+      justifyContent:"center",
+      marginTop:30,
+      width:"90%",
+    },
+    titleText:{
+      fontSize: 30,
+      fontWeight:"bold",
+      marginBottom:30
+    },
+    errorText: {
+      color: "#A10000",
+    },
+    safeAreaView: {
+      flex: 1,
+      backgroundColor:"white",
+      justifyContent:"center",
+    },
+    button: {
+      backgroundColor: themeColor,
+      paddingHorizontal: 16,
+      paddingVertical: 8,
+      borderWidth:2,
+      borderRadius:30,
+      minWidth:100,
+      alignItems:"center",
+      alignContent:"center",
+    },
+    buttonText: {
+      color: textColor,
+      fontSize: 16,
+    },
+    textHeader: {
+      fontSize: 36,
+      marginBottom: 24,
+      marginStart: 12,
+      marginTop: 0,
+      fontWeight: 'bold',
+    },
+    container: {
+      flex:1,
+      flexDirection:'column',
+      justifyContent : "center",
+      backgroundColor: "white",
+      alignItems: "center",
+    },
+    signUpView:{
+      minWidth:150,
+      backgroundColor: 'white',
+      borderWidth:2,
+      borderColor: 'black',
+      borderRadius:10,
+      borderColor: 'gray',
+      margin:10,
+      justifyContent:"center",
+      alignItems:"center",
+    },
+    centeredView: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 22,
+    },
     signInText:{
       link:{
         color:'black',
@@ -52,10 +126,14 @@ export default function SignUp({ navigation }) {
         fontWeight:"bold"
       }
     },
+    titleText:{
+      fontSize: 30,
+      fontWeight:"bold"
+    },
     buttonContainer:{
       flexDirection:"row",
       justifyContent:"center",
-      marginTop:30,
+      marginTop:5,
       width:"90%",
     },
     titleText:{
@@ -130,7 +208,7 @@ export default function SignUp({ navigation }) {
     Keyboard.dismiss();
   };
 
-  const onSubmit = (values)=>{
+  const onSubmit = (values) => {
     console.log(values);
     handleDismissKeyboard();
     setIsLoading(true);
@@ -139,7 +217,7 @@ export default function SignUp({ navigation }) {
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
-  }
+  };
 
   const errorText = ( errorObject, touchedObject ) => (
     Object.keys(errorObject).map((fieldName) => {
