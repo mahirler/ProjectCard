@@ -6,7 +6,7 @@ import { Portal } from 'react-native-paper'
 import { View, StyleSheet, ScrollView } from 'react-native'
 import { Pressable, Animated, Easing } from 'react-native'
 
-const CustomModalView = () => {
+const CustomModalView = ({children, labelText}) => {
   const [modalVisible, setModalVisible]= useState(false);
   const scaleValue = new Animated.Value(1)
 
@@ -49,7 +49,6 @@ const CustomModalView = () => {
     textStyle:{
       color: 'black',
       fontWeight: 'bold',
-      textAlign: 'center',
     },
     modalStyle:{
       backgroundColor: 'rgba(0, 0, 0, 0.85)', 
@@ -116,7 +115,7 @@ const CustomModalView = () => {
       <View style={styles.modalContainer}>
         <View style={styles.ModalTitleView}>
           <Text>
-            Kullanıcı Sözleşmesi
+            {labelText}
           </Text>
         </View>
         <ScrollView style={{...styles.ScrollView,}}>
@@ -209,9 +208,7 @@ const CustomModalView = () => {
       </View>
     </Modal>
   </Portal>
-  <Pressable onPress={openModal}>
-    <Text style={styles.textStyle}>Kullanıcı Sözleşmesi</Text>
-  </Pressable>
+    <Text onPress={openModal} style={styles.textStyle}>{children}</Text>
   </>
   )}
 

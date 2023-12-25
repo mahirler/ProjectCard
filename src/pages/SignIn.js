@@ -1,23 +1,71 @@
-import { View, StyleSheet, Keyboard, TouchableWithoutFeedback, SafeAreaView } from "react-native";
+import { View, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useState } from "react";
-import { Text, useTheme } from "react-native-paper";
+import { Text, useTheme,} from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 import { Field, Formik } from "formik";
 import { CustomInput } from "../components/form/CustomInput";
-import { SignUpValidationSchema } from "../validations/SignUpValidation";
 import { PasswordInput } from "../components/form/PasswordInput";
-import { SubmitButton, NavigateHomeButton } from "../components/form/Buttons";
-import { ProgressSteps, ProgressStep } from "react-native-progress-steps";
-import SignUpFirstPart from "./SignUp";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { SignInValidationSchema } from "../validations/SignInValidations";
+import SubmitButton from "../components/form/SubmitButton";
+
 
 export const themeColor = '#1e1e1e';
 export const textColor = '#ffffffdd';
 
-export default function SignIn({ navigation }) {
+export default function SignUp({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const theme = useTheme();
 
   const styles = StyleSheet.create({
+    container: {
+      flex:1,
+      flexDirection:'column',
+      justifyContent : "center",
+      backgroundColor: "white",
+      alignItems: "center",
+    },
+    signUpView:{
+      minWidth:150,
+      backgroundColor: 'white',
+      borderWidth:2,
+      borderColor: 'black',
+      borderRadius:10,
+      borderColor: 'gray',
+      margin:10,
+      justifyContent:"center",
+      alignItems:"center",
+    },
+    navigationTextContainer:{
+      flexDirection:"row",
+      justifyContent:"center",
+      alignItems:"center",
+      marginTop:15
+    },
+    signInText:{
+      link:{
+        color:'black',
+        fontWeight:"bold"
+      },
+      phrase:{
+        color:"gray",
+        fontWeight:"bold"
+      }
+    },
+    buttonContainer:{
+      flexDirection:"row",
+      justifyContent:"center",
+      marginTop:30,
+      width:"90%",
+    },
+    titleText:{
+      fontSize: 30,
+      fontWeight:"bold",
+      marginBottom:30
+    },
+    errorText: {
+      color: "#A10000",
+    },
     safeAreaView: {
       flex: 1,
       backgroundColor:"white",
@@ -36,18 +84,13 @@ export default function SignIn({ navigation }) {
     buttonText: {
       color: textColor,
       fontSize: 16,
-    },textHeader: {
+    },
+    textHeader: {
       fontSize: 36,
       marginBottom: 24,
       marginStart: 12,
       marginTop: 0,
       fontWeight: 'bold',
-    },
-    container: {
-      flex : 1,
-      justifyContent : "center",
-      backgroundColor: theme.colors.background,
-      alignItems: "center",
     },
     titleContainer:{
       display:"flex",
@@ -55,82 +98,115 @@ export default function SignIn({ navigation }) {
       width:"90%",
       marginBottom: 20
     },
-    navigationTextContainer:{
-      flexDirection:"row",
-      justifyContent:"center",
-      alignItems:"center",
-      marginTop:15,
+    centeredView: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 22,
     },
-    signInText:{
-      link:{
-        color:'black',
-        fontWeight:"bold"
-      },
-      phrase:{
-        color:"gray",
-        fontWeight:"bold"
-      }
+    agreementContainer: {
+      flexDirection:'column',
+      justifyContent:'center',
+      width:'90%',
+      marginTop:15
     },
-    titleText:{
-      fontSize: 30,
-      fontWeight:"bold"
+    agreementView: {
+      flexDirection:'row',
+      maxWidth:'90%',
+      margin:5,
     },
-    buttonContainer:{
-      flexDirection:"row",
-      justifyContent:"center",
-      marginTop:5,
+    buttonStyle:{
+      minWidth:150,
       width:"90%",
-    },
-    errorText: {
-      color: "#A10000",
-    },
+      backgroundColor: 'black',
+      borderWidth:2,
+      borderRadius:30,
+      margin:10,
+      },
   });
 
 
-
-  const progressSteps = {
-    borderWidth: 3,
-    activeStepIconBorderColor: themeColor,
-    completedProgressBarColor: themeColor,
-    activeStepIconColor: themeColor,
-    activeLabelColor: themeColor,
-    completedStepNumColor: themeColor,
-    completedStepIconColor: themeColor,
-    activeStepNumColor: textColor,
-  };
-  const progressStep = {
-    nextBtnText: 'Sonraki  >',
-    previousBtnText: '<  Önceki',
-    finishBtnText: 'Gönder',
-    nextBtnStyle: styles.button,
-    previousBtnStyle: styles.button,
-    nextBtnTextStyle: styles.buttonText,
-    previousBtnTextStyle: styles.buttonText,
+  const handleDismissKeyboard = () => {
+    Keyboard.dismiss();
   };
 
-  const firstProgressStep = {
-    ...progressStep,
-    onPrevious: () => navigation.navigate("Home"),
-    previousBtnText: '< Geri',
-  };
-  
+  const onSubmit = (values)=>{
+    console.log(values);
+    handleDismissKeyboard();
+    setIsLoading(true);
+    navigation.navigate("Home")
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }
+
+  const errorText = ( errorObject, touchedObject ) => (
+    Object.keys(errorObject).map((fieldName) => {
+      if (touchedObject[fieldName]) {
+        return (
+          <Text key={fieldName} style={styles.errorText}>
+            {errorObject[fieldName]}
+          </Text>
+        );
+      }
+      return null;
+    })
+  );
+
+  const initialValues = {name:"",password:"",}
+  initialTouched={ name: false, password: false,}
+  const fields = ['name','password'];  
+
 
   return (
+    <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
     <>
     <StatusBar barStyle="dark-content" />
-    <SafeAreaView style={styles.safeAreaView}>
-        <ProgressSteps {...progressSteps} >
-          <ProgressStep label="Sepetim" {...firstProgressStep}>
-            <SignUpFirstPart/>
-          </ProgressStep>
-          <ProgressStep label="Adres" {...progressStep}>
-            <Text style={styles.textHeader}>Adres bilgileri</Text>
-          </ProgressStep>
-          <ProgressStep label="Ödeme" {...progressStep}>
-            <Text style={styles.textHeader}>Ödeme bilgileri</Text>
-          </ProgressStep>
-        </ProgressSteps>
-      </SafeAreaView>
+    <SafeAreaView style={styles.safeAreaView} >
+      <Formik
+          validationSchema={SignInValidationSchema}
+          initialValues={initialValues}
+          initialTouched={initialTouched}
+          onSubmit={onSubmit}
+          >
+           {({handleSubmit, errors, touched,}) => (
+            <View style={styles.container}>
+            <Text style={styles.titleText}>Kullanıcı Bilgileri</Text>  
+                <Field
+                component={CustomInput}
+                name="name"
+                placeholder="Name"
+                />
+                <Field
+                component={PasswordInput}
+                name="password"
+                placeholder="Password"
+                />
+
+              {errorText(errors, touched)}
+                
+                <View style={styles.navigationTextContainer}>
+                  <Text style={styles.signInText.phrase} >Hesabın yoksa  </Text>
+                  <Text 
+                    style={styles.signInText.link} onPress={() => navigation.navigate("SignUp")}>
+                      Kayıt ol
+                  </Text>
+                </View>
+
+                <SubmitButton 
+                onPress={handleSubmit}
+                isLoading={isLoading}
+                style={styles.buttonStyle}
+                >
+                  Giriş yap
+                </SubmitButton>
+            </View>
+          )}
+          </Formik>
+    </SafeAreaView>
     </>
+    </TouchableWithoutFeedback>
+
   );
 }

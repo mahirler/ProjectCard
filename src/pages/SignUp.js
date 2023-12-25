@@ -1,5 +1,5 @@
 import { View, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-native";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Text, useTheme,} from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 import { Field, Formik } from "formik";
@@ -9,7 +9,7 @@ import { PasswordInput } from "../components/form/PasswordInput";
 import { ProgressSteps, ProgressStep } from "react-native-progress-steps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomModalView from "../components/form/CustomModalView";
-import CheckBox from "react-native-check-box";
+import AgreementCheckBox from "../components/form/AgreementCheckBox";
 
 
 export const themeColor = '#1e1e1e';
@@ -21,7 +21,8 @@ export default function SignUp({ navigation }) {
 
   const styles = StyleSheet.create({
     container: {
-      flex : 1,
+      flex:1,
+      flexDirection:'column',
       justifyContent : "center",
       backgroundColor: "white",
       alignItems: "center",
@@ -105,6 +106,18 @@ export default function SignUp({ navigation }) {
       alignItems: 'center',
       marginTop: 22,
     },
+    agreementContainer: {
+      flexDirection:'column',
+      justifyContent:'center',
+      width:'90%',
+      marginTop:15
+    },
+    agreementView: {
+      flexDirection:'row',
+      maxWidth:'90%',
+      margin:5,
+    },
+
   });
 
   const progressSteps = {
@@ -140,10 +153,11 @@ export default function SignUp({ navigation }) {
     console.log(values);
     handleDismissKeyboard();
     setIsLoading(true);
+    navigation.navigate("Home")
 
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 1000);
   }
 
   const errorText = ( errorObject, touchedObject ) => (
@@ -159,11 +173,12 @@ export default function SignUp({ navigation }) {
     })
   );
 
-  const initialValues = {email: "",name:"",phoneNumber:"",password:"", confirmPassword:"",userAgreement:false}
-  initialTouched={ name: false, email: false, phoneNumber: false, password: false, confirmPassword: false, userAgreement:false }
-  const firstStepFields = ['name','email'];  
-  const secondStepFields = ['phoneNumber', 'password'];
-  const lastStepFields = ['confirmPassword', 'userAgreement'];
+  const initialValues = {email: "",name:"",phoneNumber:"",password:"", confirmPassword:"",userAgreement:false, kvkk:false, dataAgreement:false}
+  initialTouched={ name: false, email: false, phoneNumber: false, password: false, confirmPassword: false, userAgreement:false, kvkk:false, dataAgreement:false }
+  const firstStepFields = ['name','email', 'password', 'confirmPassword'];  
+  const secondStepFields = ['phoneNumber',];
+  const lastStepFields = ['userAgreement', 'kvkk', 'dataAgreement'];
+
 
   return (
     <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
@@ -185,10 +200,12 @@ export default function SignUp({ navigation }) {
               onNext={() => {
                 setTouched({"name" : true})
                 setTouched({"email" : true})
+                setTouched({"password" : true})
+                setTouched({"confirmPassword" : true})
               }}
             >
               <View style={styles.container}>
-              <Text style={styles.titleText}>Kimlik Bilgileri</Text>  
+              <Text style={styles.titleText}>Kullanıcı Bilgileri</Text>  
               <>
                   <Field
                   component={CustomInput}
@@ -200,6 +217,16 @@ export default function SignUp({ navigation }) {
                   name="email"
                   placeholder="Email"
                   keyboardType="email-address"
+                  />
+                  <Field
+                  component={PasswordInput}
+                  name="password"
+                  placeholder="Password"
+                  />
+                  <Field
+                  component={PasswordInput}
+                  name="confirmPassword"
+                  placeholder="Confirm Password"
                   />
 
                 {errorText(errors, touched)}
@@ -219,7 +246,6 @@ export default function SignUp({ navigation }) {
               errors={secondStepFields.some(field => errors[field])}
               onNext={() => {
                 setTouched({"phoneNumber" : true})
-                setTouched({"password": true})
               }}
             >
               <View style={styles.container}>
@@ -230,11 +256,6 @@ export default function SignUp({ navigation }) {
                   name="phoneNumber"
                   placeholder="PhoneNumber"
                   keyboardType="numeric"
-                  />
-                  <Field
-                  component={PasswordInput}
-                  name="password"
-                  placeholder="Password"
                   />
                   {errorText(errors, touched)}
                   <View style={styles.navigationTextContainer}>
@@ -248,46 +269,68 @@ export default function SignUp({ navigation }) {
               </View>
             </ProgressStep>            
 
-            <ProgressStep nextBtnLoading={isLoading} onSubmit={handleSubmit} nextBtnDisabled={isLoading} 
+            <ProgressStep nextBtnLoading={isLoading} onSubmit={handleSubmit}
               {...progressStep}
               errors={lastStepFields.some(field => errors[field])}
-              onNext={handleSubmit}
-            >
-              <View style={styles.container}>
-                <Text style={styles.titleText}>Şifre Belirleme</Text>  
-                <>
-                  <Field
-                  component={PasswordInput}
-                  name="confirmPassword"
-                  placeholder="Confirm Password"
-                  />
-
-              <View style={{
-                width:'80%',
-                flexDirection:'row',
-                alignItems:'center',
+              nextBtnDisabled={ isLoading}
+              onNext={() => {
+                setTouched({"userAgreement" : true})
+                setTouched({"kvkk": true})
+                setTouched({"dataAgreement": true})
               }}
-               >
-                <CheckBox
-                isChecked={values.userAgreement}
-                onClick={()=> {
-                  setFieldValue('userAgreement', !values.userAgreement)
-                }}
-                style={{marginEnd:'auto'}}
-                />
-                <CustomModalView/>
-              </View>
+            >
+              <View style={{...styles.container, width:'auto'}}>
+                <Text style={styles.titleText}>Şifre Belirleme</Text>  
 
-                    {errorText(errors, touched)}
+                  <View style={styles.agreementContainer}>
+                    <View style={styles.agreementView}>
+                      <AgreementCheckBox isChecked={values.userAgreement} onClick={()=> {
+                      setFieldValue('userAgreement', !values.userAgreement)
+                      }} />
+                      
+                      <View style={{marginTop:8}}>
+                        <Text>
+                        <CustomModalView labelText="Kullanıcı Sözleşmesi">Kullanıcı sözleşmesini{' '}</CustomModalView>
+                         okudum, kabul ediyorum.
+                        </Text>
+                      </View>
 
-                    <View style={styles.navigationTextContainer}>
-                      <Text style={styles.signInText.phrase} >Bir hesaba sahipsen  </Text>
-                      <Text 
-                        style={styles.signInText.link} onPress={() => navigation.navigate("SignIn")}>
-                          Giriş Yap
-                      </Text>
                     </View>
-                  </>
+                    <View style={styles.agreementView}>
+                      <AgreementCheckBox isChecked={values.kvkk} onClick={()=> {
+                      setFieldValue('kvkk', !values.kvkk)
+                      }} />
+
+                      <View style={{marginTop:8}}>
+                        <Text>
+                        <CustomModalView labelText="KVKK Aydınlatma Metni" >KVKK aydınlatma formunu </CustomModalView>
+                        okudum, aydınlatma formunu onaylıyorum.
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={styles.agreementView}>
+                      <AgreementCheckBox isChecked={values.dataAgreement} onClick={()=> {
+                      setFieldValue('dataAgreement', !values.dataAgreement)
+                      }} />
+
+                      <View style={{marginTop:8}}>
+                        <Text>
+                        <CustomModalView labelText="Verilerin İşlenmesi Sözleşmesi" >Verilerimin işlenmesini </CustomModalView>
+                        ve bildirim yollanmasını kabul ediyorum
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+
+                  {errorText(errors, touched)}
+
+                  <View style={styles.navigationTextContainer}>
+                    <Text style={styles.signInText.phrase} >Bir hesaba sahipsen  </Text>
+                    <Text 
+                      style={styles.signInText.link} onPress={() => navigation.navigate("SignIn")}>
+                        Giriş Yap
+                    </Text>
+                  </View>
               </View>
             </ProgressStep>
             

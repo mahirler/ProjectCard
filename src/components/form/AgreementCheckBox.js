@@ -1,18 +1,19 @@
-import React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
+import { View } from "react-native";
+import CheckBox from "react-native-check-box";
 
-const AgreementCheckbox = ({ children, ...props }) => {
+import React from 'react'
+
+const AgreementCheckBox = ({isChecked, onClick}) => {
   return (
-    <View>
-      <View>
-        <CheckBox
-          {...props}
-        />
-        <Text>{children}</Text>
-      </View>
+    <View 
+    style={{ margin:7,}}>
+    <CheckBox
+    isChecked={isChecked}
+    onClick={onClick}
+    style={{ marginEnd:'auto'}}
+    />
     </View>
-  );
-};
+  )
+}
 
-export default AgreementCheckbox;
+export default AgreementCheckBox

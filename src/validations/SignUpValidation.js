@@ -19,4 +19,13 @@ export const SignUpValidationSchema = yup.object().shape({
       .string()
       .min(2, ({ min }) => `Şifre En Az ${min} Karakterden Oluşmalı`)
       .required('Lütfen Şifrenizi Doğrulayın'),
+    userAgreement: yup
+      .bool()
+      .required().oneOf([true], 'Kullanıcı sözleşmesi imzalanmalıdır'),
+    kvkk: yup
+    .bool()
+    .required().oneOf([true], 'KVKK sözleşmesi imzalanmalıdır'),
+    dataAgreement: yup
+    .bool()
+    .required().oneOf([true], 'Verilerin işleme sözleşmesi imzalanmalıdır'),
   })
