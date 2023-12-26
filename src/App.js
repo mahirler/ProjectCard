@@ -1,6 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import SignUpFirstPart from "./pages/SignUpFirstPart";
-import SignUpSecondPart from "./pages/SignUpSecondPart";
+import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import { NavigationContainer } from "@react-navigation/native";
 import Home from "./pages/Home";
@@ -71,8 +70,7 @@ export default function App() {
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Test" component={Test} />
           <Stack.Screen name="CameraTest" component={CameraTest} />
-          <Stack.Screen name="SignUpFirstPart" component={SignUpFirstPart} />
-          <Stack.Screen name="SignUpSecondPart" component={SignUpSecondPart} />
+          <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="SignIn" component={SignIn} />
           <Stack.Screen name="Settings" component={Settings} />
           <Stack.Screen name="Notifications" component={Notifications} />
