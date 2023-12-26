@@ -4,22 +4,20 @@ import SignUpSecondPart from "./pages/SignUpSecondPart";
 import SignIn from "./pages/SignIn";
 import { NavigationContainer } from "@react-navigation/native";
 import Home from "./pages/Home";
-import { Button, Text } from "react-native-paper";
-import { AppBarContext } from "./contexts/AppBarContext";
 import { ModalContext } from "./contexts/ModalContext";
 import { useMemo, useState } from "react";
-import AppbarHeader from "./components/AppbarHeader";
-import AppbarNavigator from "./components/AppbarNavigator";
 import ModalMenu from "./components/ModalMenu";
-import usePreferences from "./contexts/usePreferences";
 import Test from "./pages/Test";
 import CameraTest from "./pages/CameraTest";
 import Settings from "./pages/Settings";
 import Notifications from "./pages/Notifications";
 import Refund from "./pages/Refund";
 import Map from "./pages/Map";
+import Expenses from "./pages/Expenses";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   // const [showHeader, setShowHeader] = useState(true);
@@ -80,6 +78,7 @@ export default function App() {
           <Stack.Screen name="Notifications" component={Notifications} />
           <Stack.Screen name="Refund" component={Refund} />
           <Stack.Screen name="Map" component={Map} />
+          <Stack.Screen name="Expenses" component={Expenses} />
         </Stack.Navigator>
         <ModalMenu />
       </NavigationContainer>

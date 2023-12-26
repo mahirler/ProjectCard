@@ -1,15 +1,16 @@
-import { IconButton } from "react-native-paper";
-import AppbarHeader from "../components/AppbarHeader";
 import { Text, View } from "react-native";
-import React from "react";
+import AppbarHeader from "../components/AppbarHeader";
+import { IconButton } from "react-native-paper";
 import usePreferences from "../contexts/usePreferences";
 import PieChart from "react-native-pie-chart";
 
-export default function Refund({ navigation }) {
+export default function Expenses({ navigation }) {
   const { theme } = usePreferences();
-
+  const widthAndHeight = 300;
+  const series = [123, 321, 123, 789, 537];
+  const sliceColor = ["#fbd203", "#ffb300", "#ff9100", "#ff6c00", "#ff3c00"];
   return (
-    <React.Fragment>
+    <>
       <AppbarHeader
         show={true}
         content={
@@ -18,6 +19,7 @@ export default function Refund({ navigation }) {
               icon="arrow-left"
               size={30}
               onPress={() => navigation.goBack()}
+              // style={{ zIndex: 1000 }}
             />
             <Text
               style={{
@@ -27,7 +29,7 @@ export default function Refund({ navigation }) {
                 color: theme.colors.textColor,
               }}
             >
-              Geri Ödemeler
+              Harcamalar
             </Text>
             <IconButton icon="cog-outline" size={30} />
           </>
@@ -40,7 +42,14 @@ export default function Refund({ navigation }) {
           backgroundColor: theme.colors.backgroundColor,
           alignItems: "center",
         }}
-      ></View>
-    </React.Fragment>
+      >
+        <PieChart
+          widthAndHeight={widthAndHeight}
+          series={series}
+          sliceColor={sliceColor}
+          coverRadius={0.45}
+        />
+      </View>
+    </>
   );
 }

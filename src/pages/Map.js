@@ -9,6 +9,8 @@ import MarkerIcon from "../../assets/marker.png";
 import { useState } from "react";
 import { useRef } from "react";
 import ModalWindowBottom from "../components/ModalWindowBottom";
+import LightMapStyle from "../styles/LightMapStyle.json";
+import DarkMapStyle from "../styles/DarkMapStyle.json";
 
 export default function Map({ navigation }) {
   const { theme, isThemeDark } = usePreferences();
@@ -45,6 +47,7 @@ export default function Map({ navigation }) {
               icon="arrow-left"
               size={30}
               onPress={() => navigation.goBack()}
+              // style={{ zIndex: 1000 }}
             />
             <Text
               style={{
@@ -70,20 +73,27 @@ export default function Map({ navigation }) {
           longitude: 30.363843638657414,
           longitudeDelta: 0.022869149943360867,
         }}
-        mapType="mutedStandard"
+        mapType="standard"
+        customMapStyle={isThemeDark ? DarkMapStyle : LightMapStyle}
         userInterfaceStyle={isThemeDark ? "dark" : "light"}
       >
         {markers.map((item, _index) => {
           return (
             <Marker
-              id={_index}
-              identifier={_index}
+              key={_index}
+              // id={_index}
+              // identifier={_index}
               coordinate={{
                 latitude: item.latitude,
                 longitude: item.longitude,
               }}
               onPress={(e) => {
                 ref.current.animateToRegion(e.nativeEvent.coordinate, 500);
+                setSelected({
+                  bool: true,
+                  id: _index,
+                  content: item.content,
+                });
               }}
               onSelect={(e) => {
                 setSelected({
@@ -96,13 +106,21 @@ export default function Map({ navigation }) {
                 setSelected({ ...selected, id: -1, bool: false })
               }
             >
-              <Icon
-                source="store"
-                size={45}
-                color={
-                  selected.id === _index && !selected.bool + 1 ? "black" : "red"
-                }
-              />
+              <View
+                style={{
+                  borderRadius: 20,
+                  backgroundColor:
+                    selected.id === _index && selected.bool ? "white" : "black",
+                }}
+              >
+                <Icon
+                  source="store"
+                  size={45}
+                  color={
+                    selected.id === _index && selected.bool ? "black" : "white"
+                  }
+                />
+              </View>
             </Marker>
           );
         })}

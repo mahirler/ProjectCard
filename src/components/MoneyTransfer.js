@@ -7,7 +7,7 @@ import {
   Text,
 } from "react-native-paper";
 import usePreferences from "../contexts/usePreferences";
-import { useState } from "react";
+import React, { useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 
 export default function MoneyTransfer({ showSendMoney }) {
@@ -20,41 +20,49 @@ export default function MoneyTransfer({ showSendMoney }) {
       Name: "Ömer Kaya",
       Icon: null,
       Number: "+905548838283",
+      BenbuyNo: 21,
     },
     {
       Name: "Rıfkı Kesepara",
       Icon: null,
       Number: "+905316639317",
+      BenbuyNo: 300,
     },
     {
       Name: "Efe Dortluoğlu",
       Icon: null,
       Number: "+905313313131",
+      BenbuyNo: 34,
     },
     {
       Name: "Zafer Bacaksız",
       Icon: null,
       Number: "+905313313131",
+      BenbuyNo: 50,
     },
     {
       Name: "Ömer Kaya",
       Icon: null,
       Number: "+905548838283",
+      BenbuyNo: 21,
     },
     {
       Name: "Rıfkı Kesepara",
       Icon: null,
       Number: "+905316639317",
+      BenbuyNo: 300,
     },
     {
       Name: "Efe Dortluoğlu",
       Icon: null,
       Number: "+905313313131",
+      BenbuyNo: 34,
     },
     {
       Name: "Zafer Bacaksız",
       Icon: null,
       Number: "+905313313131",
+      BenbuyNo: 50,
     },
   ];
 
@@ -115,9 +123,9 @@ export default function MoneyTransfer({ showSendMoney }) {
                 filterValue.toLocaleLowerCase()
               );
           })
-          .map((item) => {
+          .map((item, _index) => {
             return (
-              <>
+              <React.Fragment key={_index}>
                 <View
                   style={{
                     height: 100,
@@ -144,11 +152,13 @@ export default function MoneyTransfer({ showSendMoney }) {
                     }}
                   >
                     <Text style={{ fontSize: 20 }}>{item.Name}</Text>
-                    <Text>{item.Number}</Text>
+                    <Text>
+                      {value == "phonenumber" ? item.Number : item.BenbuyNo}
+                    </Text>
                   </View>
                 </View>
                 <Divider leftInset="true" />
-              </>
+              </React.Fragment>
             );
           })}
       </ScrollView>

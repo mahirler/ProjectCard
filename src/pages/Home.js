@@ -447,6 +447,7 @@ export default function Home({ navigation }) {
                 color={theme.colors.iconColor}
                 size={45}
                 style={{ margin: 0 }}
+                onPress={() => navigation.navigate("Expenses")}
               />
               <Appbar.Action
                 icon="home-outline"

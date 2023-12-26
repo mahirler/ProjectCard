@@ -7,14 +7,12 @@ import Animated, {
 } from "react-native-reanimated";
 import { useEffect } from "react";
 import { View } from "react-native";
-import { ScrollView } from "react-native";
-import { TouchableOpacity } from "react-native";
 import { Text } from "react-native";
 
 export default function ModalWindowBottom({ visible, content }) {
   const { theme, isThemeDark } = usePreferences();
   const { bottom } = useSafeAreaInsets();
-  const translateY = useSharedValue(0);
+  const translateY = useSharedValue(-40);
 
   const animatedStyl = useAnimatedStyle(() => ({
     bottom: withTiming(translateY.value, {
@@ -24,9 +22,9 @@ export default function ModalWindowBottom({ visible, content }) {
 
   useEffect(() => {
     if (visible) {
-      translateY.value += 100;
-    } else if (translateY.value != 0) {
-      translateY.value -= 100;
+      translateY.value += 140;
+    } else if (translateY.value != -40) {
+      translateY.value -= 140;
     }
   }, [visible]);
 
@@ -63,12 +61,13 @@ export default function ModalWindowBottom({ visible, content }) {
             padding: 10,
             borderRadius: 10,
             backgroundColor: theme.colors.modalWindow,
-            marginBottom: 5,
+            // marginBottom: 5,
             width: 380,
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "center",
             borderWidth: 1,
+            height: 100,
           }}
         >
           <View
