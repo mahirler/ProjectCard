@@ -3,7 +3,6 @@ import AppbarHeader from "../components/AppbarHeader";
 import { Text, View } from "react-native";
 import React from "react";
 import usePreferences from "../contexts/usePreferences";
-import PieChart from "react-native-pie-chart";
 
 export default function Refund({ navigation }) {
   const { theme } = usePreferences();

@@ -9,12 +9,14 @@ import {
   GestureHandlerRootView,
 } from "react-native-gesture-handler";
 import Animated, {
+  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
+  withTiming,
 } from "react-native-reanimated";
 
-function NotificationBar({ item, disabled }) {
+function NotificationBar({ index, item, disabled, clearIndexed }) {
   const { theme } = usePreferences();
   const translateX = useSharedValue(0);
   const pressed = useSharedValue(false);
@@ -43,7 +45,7 @@ function NotificationBar({ item, disabled }) {
   const nullpan = Gesture.Pan();
 
   return (
-    <View style={{ position: "relative" }}>
+    <View style={{ position: "relative" }} key={item.id}>
       <GestureDetector gesture={!disabled ? pan : nullpan}>
         <Animated.View
           style={[
@@ -128,7 +130,20 @@ function NotificationBar({ item, disabled }) {
         <IconButton
           icon={"delete"}
           size={60}
-          onPress={() => (translateX.value = withSpring(-800))}
+          color="white"
+          onPress={() =>
+            (translateX.value = withTiming(
+              -800,
+              { duration: 300 },
+              (finished) => {
+                if (finished) {
+                  console.log(index);
+                  runOnJS(clearIndexed)(index);
+                }
+                translateX.value = 0;
+              }
+            ))
+          }
         />
       </Animated.View>
       <Divider leftInset="true" />
@@ -171,24 +186,6 @@ export default function Notifications({ navigation }) {
       detail: "Hesabına 1000TL yatırdın. Güle güle harca!",
       date: "8m ago",
     },
-    {
-      id: 5,
-      title: "Para Yatırma İşlemi",
-      detail: "Hesabına 50TL yatırdın. Güle güle harca!",
-      date: "5m ago",
-    },
-    {
-      id: 6,
-      title: "Para Yatırma İşlemi",
-      detail: "Hesabına 25TL yatırdın. Güle güle harca!",
-      date: "2m ago",
-    },
-    {
-      id: 7,
-      title: "Para Yatırma İşlemi",
-      detail: "Hesabına 5000TL yatırdın. Güle güle harca!",
-      date: "2m ago",
-    },
   ]);
 
   return (
@@ -227,6 +224,7 @@ export default function Notifications({ navigation }) {
       <View
         style={{
           flex: 1,
+          width: "100%",
           backgroundColor: theme.colors.backgroundColor,
           alignItems: "center",
         }}
@@ -242,17 +240,33 @@ export default function Notifications({ navigation }) {
         {content.length != 0 ? (
           <ScrollView style={{ width: "100%" }}>
             {content.map((item, _index) => {
-              return <NotificationBar item={item} />;
+              return (
+                <NotificationBar
+                  index={_index}
+                  item={item}
+                  clearIndexed={(index) => {
+                    if (content.length == 1) {
+                      setContent([]);
+                    } else {
+                      var array = [...content]; // make a separate copy of the array
+                      if (index !== -1) {
+                        array.splice(index, 1);
+                        setContent(array);
+                      }
+                    }
+                  }}
+                />
+              );
             })}
           </ScrollView>
         ) : (
           <Text
             style={{
               color: theme.colors.textColor,
-              flex: 1,
-              verticalAlign: "middle",
               fontSize: 50,
               fontWeight: "bold",
+              verticalAlign: "middle",
+              textAlign: "center",
             }}
           >
             Bildirim Yok
