@@ -1,153 +1,130 @@
 import { Button, Divider, Icon, IconButton } from "react-native-paper";
 import AppbarHeader from "../components/AppbarHeader";
-import { ScrollView, Text, View } from "react-native";
-import React, { useState } from "react";
+import { Text, View } from "react-native";
+import React, { useRef, useState } from "react";
 import usePreferences from "../contexts/usePreferences";
 import {
-  Gesture,
-  GestureDetector,
   GestureHandlerRootView,
+  Swipeable,
+  ScrollView,
 } from "react-native-gesture-handler";
 import Animated, {
-  runOnJS,
   useAnimatedStyle,
   useSharedValue,
-  withSpring,
-  withTiming,
 } from "react-native-reanimated";
 
-function NotificationBar({ index, item, disabled, clearIndexed }) {
+function NotificationBar({ panRef, index, item, clearIndexed }) {
   const { theme } = usePreferences();
-  const translateX = useSharedValue(0);
-  const pressed = useSharedValue(false);
+  const swipeRef = useRef(null);
 
-  const pan = Gesture.Pan()
-    .onBegin(() => {
-      pressed.value = true;
-    })
-    .onChange((event) => {
-      translateX.value += event.changeX;
-    })
-    .onFinalize(() => {
-      if (translateX.value < 0) translateX.value = withSpring(-80);
-      else translateX.value = withSpring(0);
-      pressed.value = false;
+  const renderLeftActions = (progress, dragX) => {
+    const trans = dragX.interpolate({
+      inputRange: [0, 50, 100, 101],
+      outputRange: [-20, 0, 0, 1],
     });
 
-  const notificationAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value }],
-  }));
-
-  const animatedBackgroundStyle = useAnimatedStyle(() => ({
-    width: -translateX.value,
-  }));
-
-  const nullpan = Gesture.Pan();
-
-  return (
-    <View style={{ position: "relative" }} key={item.id}>
-      <GestureDetector gesture={!disabled ? pan : nullpan}>
-        <Animated.View
-          style={[
-            {
-              width: "100%",
-              minHeight: 100,
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              backgroundColor: theme.colors.backgroundColor,
-            },
-            notificationAnimatedStyle,
-          ]}
-        >
-          <View
-            style={{
-              width: 65,
-              height: 65,
-              backgroundColor: "grey",
-              borderRadius: 7,
-            }}
-          />
-          <View
-            style={{
-              marginLeft: 15,
-              width: "75%",
-              justifyContent: "space-between",
-            }}
-          >
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 15,
-                  fontWeight: "bold",
-                  textAlign: "center",
-                  color: theme.colors.textColor,
-                }}
-              >
-                {item.title}
-              </Text>
-              <Text
-                style={{
-                  textAlign: "center",
-                  color: "grey",
-                }}
-              >
-                {item.date}
-              </Text>
-            </View>
-            <Text
-              style={{
-                color: theme.colors.textColor,
-                width: "100%",
-              }}
-            >
-              {item.detail}
-            </Text>
-          </View>
-        </Animated.View>
-      </GestureDetector>
+    return (
       <Animated.View
         style={[
           {
             backgroundColor: "red",
-            width: "50%",
-            height: 100,
-            position: "absolute",
-            zIndex: -1000,
-            justifyContent: "center",
-            alignItems: "center",
-            right: 0,
+            width: "100%",
+            alignItems: "flex-end",
           },
-          animatedBackgroundStyle,
         ]}
       >
         <IconButton
           icon={"delete"}
           size={60}
           color="white"
-          onPress={() =>
-            (translateX.value = withTiming(
-              -800,
-              { duration: 300 },
-              (finished) => {
-                if (finished) {
-                  console.log(index);
-                  runOnJS(clearIndexed)(index);
-                }
-                translateX.value = 0;
-              }
-            ))
-          }
+          onPress={() => {
+            // swipeRef.current.reset();
+            // clearIndexed(index);
+          }}
         />
       </Animated.View>
+    );
+  };
+
+  return (
+    <Swipeable
+      rightThreshold={110}
+      friction={2}
+      onSwipeableOpen={() => {
+        swipeRef.current.reset();
+        clearIndexed(index);
+      }}
+      ref={swipeRef}
+      style={{ position: "relative" }}
+      key={index}
+      renderRightActions={renderLeftActions}
+    >
+      <View
+        style={[
+          {
+            width: "100%",
+            minHeight: 100,
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            backgroundColor: theme.colors.backgroundColor,
+            marginLeft: 7,
+          },
+        ]}
+      >
+        <View
+          style={{
+            width: 65,
+            height: 65,
+            backgroundColor: "grey",
+            borderRadius: 7,
+          }}
+        />
+        <View
+          style={{
+            marginLeft: 15,
+            width: "75%",
+            justifyContent: "space-between",
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: "bold",
+                textAlign: "center",
+                color: theme.colors.textColor,
+              }}
+            >
+              {item.title}
+            </Text>
+            <Text
+              style={{
+                textAlign: "center",
+                color: "grey",
+              }}
+            >
+              {item.date}
+            </Text>
+          </View>
+          <Text
+            style={{
+              color: theme.colors.textColor,
+              width: "100%",
+            }}
+          >
+            {item.detail}
+          </Text>
+        </View>
+      </View>
       <Divider leftInset="true" />
-    </View>
+    </Swipeable>
   );
 }
 
@@ -182,6 +159,19 @@ export default function Notifications({ navigation }) {
     },
     {
       id: 4,
+      title: "Para Yatırma İşlemi",
+      detail: "Hesabına 1000TL yatırdın. Güle güle harca!",
+      date: "8m ago",
+    },
+    {
+      id: 5,
+      title: "İndirim Kampanyası",
+      detail:
+        "Steamde yapacağın her 250TL ve altındaki harcamalarda net %15'lik indirim seni bekliyor. Karçırma!",
+      date: "1 Ekim 23:23",
+    },
+    {
+      id: 6,
       title: "Para Yatırma İşlemi",
       detail: "Hesabına 1000TL yatırdın. Güle güle harca!",
       date: "8m ago",
@@ -238,7 +228,7 @@ export default function Notifications({ navigation }) {
           Tümünü Sil
         </Button>
         {content.length != 0 ? (
-          <ScrollView style={{ width: "100%" }}>
+          <ScrollView style={{ width: "100%", zIndex: 1000 }}>
             {content.map((item, _index) => {
               return (
                 <NotificationBar

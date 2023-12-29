@@ -443,7 +443,7 @@ export default function Home({ navigation }) {
               }}
             >
               <Appbar.Action
-                icon="chart-pie"
+                icon="credit-card-clock-outline"
                 color={theme.colors.iconColor}
                 size={45}
                 style={{ margin: 0 }}
