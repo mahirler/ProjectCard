@@ -12,7 +12,7 @@ import { Text } from "react-native";
 export default function ModalWindowBottom({ visible, content }) {
   const { theme, isThemeDark } = usePreferences();
   const { bottom } = useSafeAreaInsets();
-  const translateY = useSharedValue(-40);
+  const translateY = useSharedValue(-100);
 
   const animatedStyl = useAnimatedStyle(() => ({
     bottom: withTiming(translateY.value, {
@@ -23,7 +23,7 @@ export default function ModalWindowBottom({ visible, content }) {
   useEffect(() => {
     if (visible) {
       translateY.value += 140;
-    } else if (translateY.value != -40) {
+    } else if (translateY.value != -100) {
       translateY.value -= 140;
     }
   }, [visible]);

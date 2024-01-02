@@ -8,12 +8,9 @@ import {
   Swipeable,
   ScrollView,
 } from "react-native-gesture-handler";
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-} from "react-native-reanimated";
+import Animated from "react-native-reanimated";
 
-function NotificationBar({ panRef, index, item, clearIndexed }) {
+function NotificationBar({ index, item, clearIndexed }) {
   const { theme } = usePreferences();
   const swipeRef = useRef(null);
 
@@ -48,6 +45,7 @@ function NotificationBar({ panRef, index, item, clearIndexed }) {
 
   return (
     <Swipeable
+      key={index}
       rightThreshold={110}
       friction={2}
       onSwipeableOpen={() => {
@@ -56,7 +54,6 @@ function NotificationBar({ panRef, index, item, clearIndexed }) {
       }}
       ref={swipeRef}
       style={{ position: "relative" }}
-      key={index}
       renderRightActions={renderLeftActions}
     >
       <View
@@ -232,6 +229,7 @@ export default function Notifications({ navigation }) {
             {content.map((item, _index) => {
               return (
                 <NotificationBar
+                  key={_index}
                   index={_index}
                   item={item}
                   clearIndexed={(index) => {

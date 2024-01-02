@@ -1,45 +1,30 @@
-import { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, Modal } from "react-native";
-import {
-  Gesture,
-  GestureDetector,
-  GestureHandlerRootView,
-} from "react-native-gesture-handler";
-import {
-  Appbar,
-  Button,
-  IconButton,
-  Searchbar,
-  Surface,
-  Text,
-} from "react-native-paper";
+import React, { useContext, useEffect, useState } from "react";
+import { Appbar, Icon, IconButton, Searchbar, Text } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import usePreferences from "../contexts/usePreferences";
 import AppbarHeader from "../components/AppbarHeader";
-import AppbarNavigator from "../components/AppbarNavigator";
 import { ModalContext } from "../contexts/ModalContext";
 import { Skeleton } from "moti/skeleton";
-import ContentSlider from "../components/ContentSlider.";
-import LastExpenses from "../components/LastExpenses.";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
 
-import StarbucksLogo from "../../assets/brandIcons/starbucks.png";
-import BurgerKingLogo from "../../assets/brandIcons/burgerking.png";
-import GetirLogo from "../../assets/brandIcons/getir.png";
-import TrendyolLogo from "../../assets/brandIcons/trendyol.png";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import HomeBase from "./HomeBase";
+import Expenses from "./Expenses";
+import Map from "./Map";
 import MoneyTransfer from "../components/MoneyTransfer";
+import { Platform } from "react-native";
+
+const Tab = createBottomTabNavigator();
 
 export default function Home({ navigation }) {
   const { toggleTheme, isThemeDark, theme } = usePreferences();
   const { setVisible, setContent } = useContext(ModalContext);
   const [showSearch, setShowSearch] = useState(false);
-  const [showSendMoney, setShowSendMoney] = useState(false);
 
-  const pressed = useSharedValue(false);
   const searBarWidth = useSharedValue(0);
 
   const MenuModal = [
@@ -54,7 +39,10 @@ export default function Home({ navigation }) {
     {
       label: "Ücretler ve Kampanyalar",
       icon: "cash-multiple",
-      onPress: () => {},
+      onPress: () => {
+        navigation.navigate("Opportunities");
+        setVisible(false);
+      },
     },
     {
       label: "Destek Merkezi",
@@ -112,166 +100,19 @@ export default function Home({ navigation }) {
     },
   ];
 
-  const sliderContent = [
-    {
-      Text: "Getir",
-      Width: 350,
-      Icon: GetirLogo,
-      GiveBackShare: "%5",
-      NoColor: true,
-      Comment: "50TL ve üzeri alışverişlerde",
-      onPress: () => {
-        navigation.navigate("Refund");
-      },
-    },
-    {
-      Text: "Burger King",
-      Width: 350,
-      GiveBackShare: "%10",
-      Icon: BurgerKingLogo,
-    },
-    {
-      Text: "Steam",
-      Width: 350,
-      Icon: "steam",
-      GiveBackShare: "%10",
-    },
-    {
-      Text: "Trendyol",
-      Width: 350,
-      Icon: TrendyolLogo,
-      GiveBackShare: "%20",
-      NoColor: true,
-      Comment: "250TL ve üzeri alışverişlerde",
-    },
-    {
-      Text: "Netflix",
-      Width: 350,
-      Icon: "netflix",
-      GiveBackShare: "%30",
-      Comment: "Her ay 30TL ye kadar",
-    },
-    {
-      Text: "Starbucks",
-      Width: 350,
-      Icon: StarbucksLogo,
-      GiveBackShare: "%5",
-    },
-    {
-      Text: "Coffy",
-      Width: 350,
-      GiveBackShare: "%10",
-    },
-    {
-      Text: "Spotify",
-      Width: 350,
-      Icon: "spotify",
-      GiveBackShare: "%55",
-      Comment: "Her ay 15TL ye kadar",
-    },
-  ];
-
-  const expensesContent = [
-    {
-      explain: "Efe Dortluoğlu",
-      amount: -50,
-      date: "15 Kasım 23:00",
-      type: "Para Transferi",
-    },
-    {
-      explain: "Rıfkı Kesepara",
-      amount: 497,
-      date: "15 Kasım 22:39",
-      type: "Para Transferi",
-    },
-    {
-      explain: "Geri Ödeme",
-      amount: 23,
-      date: "15 Eylül 07:58",
-      type: "Market Alışverişi",
-    },
-    {
-      explain: "BİM",
-      amount: 230,
-      date: "15 Eylül 07:55",
-      type: "Market Alışverişi",
-    },
-    {
-      explain: "Zafer Bacaksız",
-      amount: -100.0,
-      date: "14 Ağustos 06:55",
-      type: "Para Transferi",
-    },
-    {
-      explain: "Geri Ödeme",
-      amount: 2,
-      date: "10 Kasım  09:07",
-      type: "Kafe Ödemesi",
-    },
-    {
-      explain: "SAU KAFE",
-      amount: -20,
-      date: "10 Kasım  09:05",
-      type: "Kafe Ödemesi",
-    },
-    {
-      explain: "Geri Ödeme",
-      amount: 4.99,
-      date: "9 Ekim  20:07",
-      type: "Tekel Alışverişi",
-    },
-    {
-      explain: "NAVIDRES",
-      amount: -49.9,
-      date: "9 Ekim  20:05",
-      type: "Tekel Alışverişi",
-    },
-  ];
-
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: theme.colors.backgroundColor,
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    box: {
-      height: 120,
-      width: 120,
-      backgroundColor: "#b58df1",
-      borderRadius: 20,
-    },
-    moneyButtons: {
-      width: 140,
-      height: 60,
-      justifyContent: "center",
-      marginHorizontal: 10,
-    },
-  });
-
   const searchBarAnimatedStyle = useAnimatedStyle(() => ({
     width: searBarWidth.value,
   }));
 
-  const qrCodeAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: withTiming(pressed.value ? 1.3 : 1) }],
-  }));
-
-  const tap = Gesture.Tap()
-    .onBegin(() => {
-      pressed.value = true;
-    })
-    .onFinalize(() => {
-      pressed.value = false;
-    });
-
+  const insets = useSafeAreaInsets();
   useEffect(() => {
     if (showSearch) searBarWidth.value = withTiming("80%");
     else searBarWidth.value = withTiming("0%");
   }, [showSearch]);
 
   return (
-    <GestureHandlerRootView style={styles.container}>
+    <>
+      {/* <GestureHandlerRootView style={styles.container}> */}
       <AppbarHeader
         show={true}
         content={
@@ -346,60 +187,7 @@ export default function Home({ navigation }) {
           </>
         }
       />
-      <View
-        style={[
-          styles.container,
-          {
-            flexDirection: "column",
-            justifyContent: "space-around",
-          },
-        ]}
-      >
-        <View
-          style={{
-            alignItems: "center",
-            height: "20%",
-            justifyContent: "center",
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 60,
-              fontWeight: "bold",
-              width: "100%",
-            }}
-          >
-            1537,09 TL
-          </Text>
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-around",
-            }}
-          >
-            <Button
-              mode="outlined"
-              textColor={theme.colors.textColor}
-              style={styles.moneyButtons}
-              labelStyle={{ fontSize: 20, fontWeight: "bold" }}
-            >
-              YATIR
-            </Button>
-            <Button
-              style={[
-                styles.moneyButtons,
-                { backgroundColor: isThemeDark ? "white" : "black" },
-              ]}
-              mode="contained"
-              textColor={isThemeDark ? "black" : "white"}
-              labelStyle={{ fontSize: 20, fontWeight: "bold" }}
-            >
-              ÇEK
-            </Button>
-          </View>
-        </View>
-        {/* <Skeleton
+      {/* <Skeleton
           show="true"
           width={Dimensions.get("window").width - 40}
           colorMode={isThemeDark ? "dark" : "light"}
@@ -413,23 +201,7 @@ export default function Home({ navigation }) {
             }}
           ></View>
         </Skeleton> */}
-        <View
-          style={{
-            justifyContent: "space-around",
-            alignItems: "center",
-            height: "80%",
-          }}
-        >
-          <LastExpenses
-            content={expensesContent}
-            height="75%"
-            style={{ marginTop: 10 }}
-          />
-          <ContentSlider content={sliderContent} />
-        </View>
-      </View>
-
-      <AppbarNavigator
+      {/* <AppbarNavigator
         show={true}
         style={{ height: 80 }}
         content={
@@ -450,7 +222,7 @@ export default function Home({ navigation }) {
                 onPress={() => navigation.navigate("Expenses")}
               />
               <Appbar.Action
-                icon="home-outline"
+                icon="home"
                 color={theme.colors.iconColor}
                 size={45}
                 style={{ margin: 0 }}
@@ -499,7 +271,94 @@ export default function Home({ navigation }) {
             </Modal>
           </>
         }
-      />
-    </GestureHandlerRootView>
+      /> */}
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false,
+          tabBarStyle: {
+            backgroundColor: theme.colors.backgroundColor,
+            borderTopWidth: 0,
+            height:
+              Platform.OS == "android"
+                ? insets.bottom + 60
+                : insets.bottom + 50,
+          },
+          tabBarShowLabel: false,
+        }}
+        initialRouteName="HomeBase"
+        safeAreaInsets={insets}
+      >
+        <Tab.Screen
+          name="Expenses"
+          component={Expenses}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <Icon
+                source={
+                  focused ? "credit-card-clock" : "credit-card-clock-outline"
+                }
+                size={45}
+                color={isThemeDark ? "white" : "black"}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="HomeBase"
+          component={HomeBase}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <Icon
+                source={focused ? "home" : "home-outline"}
+                size={45}
+                color={isThemeDark ? "white" : "black"}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Camera"
+          component={Home}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <IconButton
+                icon={focused ? "qrcode" : "qrcode"}
+                size={45}
+                iconColor={isThemeDark ? "white" : "black"}
+                onPress={() => navigation.navigate("CameraTest")}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Map"
+          component={Map}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <Icon
+                source={focused ? "map-marker" : "map-marker-outline"}
+                size={45}
+                color={isThemeDark ? "white" : "black"}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="SendMoney"
+          component={MoneyTransfer}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <IconButton
+                icon={focused ? "swap-horizontal" : "swap-horizontal"}
+                size={45}
+                iconColor={isThemeDark ? "white" : "black"}
+                onPress={() => console.log("selam")}
+              />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+      {/* </GestureHandlerRootView> */}
+    </>
   );
 }

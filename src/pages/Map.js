@@ -39,31 +39,6 @@ export default function Map({ navigation }) {
         backgroundColor: theme.colors.backgroundColor,
       }}
     >
-      <AppbarHeader
-        show={true}
-        content={
-          <>
-            <IconButton
-              icon="arrow-left"
-              size={30}
-              onPress={() => navigation.goBack()}
-              // style={{ zIndex: 1000 }}
-            />
-            <Text
-              style={{
-                fontSize: 30,
-                fontWeight: "bold",
-                textAlign: "center",
-                color: theme.colors.textColor,
-              }}
-            >
-              Harita
-            </Text>
-            <IconButton icon="cog-outline" size={30} />
-          </>
-        }
-        headerStyle={{ justifyContent: "space-between" }}
-      />
       <MapView
         ref={ref}
         style={{ width: "100%", height: "100%" }}

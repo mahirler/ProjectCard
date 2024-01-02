@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View, ScrollView } from "react-native";
 import AppbarHeader from "../components/AppbarHeader";
 import { Icon, IconButton, Surface } from "react-native-paper";
 import usePreferences from "../contexts/usePreferences";
@@ -50,7 +50,7 @@ export default function Expenses({ navigation }) {
 
   return (
     <React.Fragment>
-      <AppbarHeader
+      {/* <AppbarHeader
         show={true}
         content={
           <>
@@ -74,7 +74,7 @@ export default function Expenses({ navigation }) {
           </>
         }
         headerStyle={{ justifyContent: "space-between" }}
-      />
+      /> */}
       <CustomPieChart
         selected={selected}
         data={data}
@@ -88,84 +88,86 @@ export default function Expenses({ navigation }) {
           backgroundColor: theme.colors.backgroundColor,
         }}
       >
-        {data.map((item, index) => {
-          return (
-            <TouchableOpacity
-              activeOpacity={1}
-              onPress={item.svg.onPress}
-              style={{ width: "100%", alignItems: "center" }}
-            >
-              <Surface
-                elevation={2}
-                style={{
-                  width: "95%",
-                  backgroundColor:
-                    index == selected ? "grey" : theme.colors.modalWindow,
-                  height: 90,
-                  borderRadius: 20,
-                  alignItems: "center",
-                  justifyContent: "space-evenly",
-                  flexDirection: "row",
-                  marginBottom: 10,
-                }}
+        <ScrollView style={{ width: "100%" }}>
+          {data.map((item, index) => {
+            return (
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={item.svg.onPress}
+                style={{ width: "100%", alignItems: "center" }}
               >
-                <Icon source={item.icon} size={50} color={item.svg.fill} />
-                <View
+                <Surface
+                  elevation={2}
                   style={{
-                    alignItems: "flex-start",
-                    width: "70%",
+                    width: "95%",
+                    backgroundColor:
+                      index == selected ? "grey" : theme.colors.modalWindow,
+                    height: 90,
+                    borderRadius: 20,
+                    alignItems: "center",
+                    justifyContent: "space-evenly",
+                    flexDirection: "row",
+                    marginBottom: 10,
                   }}
                 >
+                  <Icon source={item.icon} size={50} color={item.svg.fill} />
                   <View
                     style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      width: "100%",
+                      alignItems: "flex-start",
+                      width: "70%",
                     }}
                   >
-                    <View style={{ width: "85%" }}>
-                      <Text
-                        style={{
-                          fontSize: 20,
-                          fontWeight: "500",
-                          color: theme.colors.textColor,
-                        }}
-                      >
-                        {item.type}
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 15,
-                          color: theme.colors.textColor,
-                        }}
-                      >
-                        1 Ödeme
-                      </Text>
-                    </View>
-                    <Text
+                    <View
                       style={{
-                        fontSize: 25,
-                        fontWeight: "bold",
-                        color: theme.colors.textColor,
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        width: "100%",
                       }}
                     >
-                      {item.amount}₺
-                    </Text>
+                      <View style={{ width: "85%" }}>
+                        <Text
+                          style={{
+                            fontSize: 20,
+                            fontWeight: "500",
+                            color: theme.colors.textColor,
+                          }}
+                        >
+                          {item.type}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 15,
+                            color: "grey",
+                          }}
+                        >
+                          1 Ödeme
+                        </Text>
+                      </View>
+                      <Text
+                        style={{
+                          fontSize: 25,
+                          fontWeight: "bold",
+                          color: theme.colors.textColor,
+                        }}
+                      >
+                        {item.amount}₺
+                      </Text>
+                    </View>
+                    <Progress.Bar
+                      progress={item.amount / 100}
+                      color={item.svg.fill}
+                      width={270}
+                      style={{
+                        marginTop: 5,
+                      }}
+                    />
                   </View>
-                  <Progress.Bar
-                    progress={item.amount / 100}
-                    color={item.svg.fill}
-                    width={270}
-                    style={{
-                      marginTop: 5,
-                    }}
-                  />
-                </View>
-              </Surface>
-            </TouchableOpacity>
-          );
-        })}
+                </Surface>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
       </View>
     </React.Fragment>
   );
