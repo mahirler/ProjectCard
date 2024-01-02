@@ -49,7 +49,7 @@ export default function Home({ navigation }) {
       label: "Destek Merkezi",
       icon: "lifebuoy",
       onPress: () => {
-        navigation.navigate("Feedback");
+        navigation.navigate("SearchPage");
         setVisible(false);
       },
     },
@@ -70,9 +70,12 @@ export default function Home({ navigation }) {
 
   const ProfileModal = [
     {
-      label: "Profil Düzenle",
+      label: "Profil",
       icon: "account-edit-outline",
-      onPress: () => {},
+      onPress: () => {
+        navigation.navigate("Profile");
+        setVisible(false);
+      },
     },
     {
       label: "Arkadaşlar",
