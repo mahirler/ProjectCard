@@ -6,10 +6,11 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { useEffect } from "react";
-import { View } from "react-native";
+import { Linking, Platform, View } from "react-native";
 import { Text } from "react-native";
+import { Button } from "react-native-paper";
 
-export default function ModalWindowBottom({ visible, content }) {
+export default function ModalWindowBottom({ visible, content, location }) {
   const { theme, isThemeDark } = usePreferences();
   const { bottom } = useSafeAreaInsets();
   const translateY = useSharedValue(-100);
@@ -42,7 +43,7 @@ export default function ModalWindowBottom({ visible, content }) {
           {
             position: "absolute",
             width: 380,
-            marginBottom: bottom,
+            height: 100,
             display: "flex",
             alignItems: "center",
             flexDirection: "column",
@@ -63,29 +64,47 @@ export default function ModalWindowBottom({ visible, content }) {
             backgroundColor: theme.colors.modalWindow,
             // marginBottom: 5,
             width: 380,
-            flexDirection: "row",
             alignItems: "center",
             justifyContent: "center",
             borderWidth: 1,
             height: 100,
+            flexDirection: "row",
           }}
         >
           <View
             style={{
-              width: 30,
-              height: 30,
+              width: 50,
+              height: 50,
               backgroundColor: "grey",
             }}
           />
-          <Text
+          <View
             style={{
-              color: theme.colors.textColor,
-              textAlign: "center",
-              width: "80%",
+              width: "75%",
+              alignItems: "center",
             }}
           >
-            {content && content.text}
-          </Text>
+            <Text
+              style={{
+                color: theme.colors.textColor,
+                textAlign: "center",
+                width: "80%",
+              }}
+            >
+              {content && content.text}
+            </Text>
+            <Button
+              textColor="white"
+              onPress={() => {
+                let link;
+                if (Platform.OS == "ios") link = "maps://app?daddr=";
+                else link = "google.navigation:q=";
+                Linking.openURL(link + location.la + "+" + location.lo);
+              }}
+            >
+              Konuma Git
+            </Button>
+          </View>
         </View>
       </Animated.View>
     </View>

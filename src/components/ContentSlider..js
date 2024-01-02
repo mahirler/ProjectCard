@@ -56,13 +56,13 @@ export default function ContentSlider({ content }) {
         offset.value = withSpring(-leftBoundary);
       } else if (
         offset.value >
-        leftBoundary - slideOffset * Index.value + boxSize / 2
+        leftBoundary - slideOffset * Index.value + boxSize / 4
       ) {
         Index.value--;
         offset.value = withSpring(leftBoundary - slideOffset * Index.value);
       } else if (
         offset.value <
-        leftBoundary - slideOffset * Index.value - boxSize / 2
+        leftBoundary - slideOffset * Index.value - boxSize / 4
       ) {
         Index.value++;
         offset.value = withSpring(leftBoundary - slideOffset * Index.value);

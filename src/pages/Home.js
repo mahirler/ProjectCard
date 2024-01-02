@@ -16,7 +16,7 @@ import HomeBase from "./HomeBase";
 import Expenses from "./Expenses";
 import Map from "./Map";
 import MoneyTransfer from "../components/MoneyTransfer";
-import { Platform } from "react-native";
+import { Platform, Modal } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
@@ -24,6 +24,7 @@ export default function Home({ navigation }) {
   const { toggleTheme, isThemeDark, theme } = usePreferences();
   const { setVisible, setContent } = useContext(ModalContext);
   const [showSearch, setShowSearch] = useState(false);
+  const [showSendMoney, setShowSendMoney] = useState(false);
 
   const searBarWidth = useSharedValue(0);
 
@@ -47,7 +48,10 @@ export default function Home({ navigation }) {
     {
       label: "Destek Merkezi",
       icon: "lifebuoy",
-      onPress: () => {},
+      onPress: () => {
+        navigation.navigate("Feedback");
+        setVisible(false);
+      },
     },
     {
       label: "SSS",
@@ -272,92 +276,102 @@ export default function Home({ navigation }) {
           </>
         }
       /> */}
-      <Tab.Navigator
-        screenOptions={{
-          headerShown: false,
-          tabBarStyle: {
-            backgroundColor: theme.colors.backgroundColor,
-            borderTopWidth: 0,
-            height:
-              Platform.OS == "android"
-                ? insets.bottom + 60
-                : insets.bottom + 50,
-          },
-          tabBarShowLabel: false,
-        }}
-        initialRouteName="HomeBase"
-        safeAreaInsets={insets}
-      >
-        <Tab.Screen
-          name="Expenses"
-          component={Expenses}
-          options={{
-            tabBarIcon: ({ focused }) => (
-              <Icon
-                source={
-                  focused ? "credit-card-clock" : "credit-card-clock-outline"
-                }
-                size={45}
-                color={isThemeDark ? "white" : "black"}
-              />
-            ),
+      <>
+        <Tab.Navigator
+          screenOptions={{
+            headerShown: false,
+            tabBarStyle: {
+              backgroundColor: theme.colors.backgroundColor,
+              borderTopWidth: 0,
+              height:
+                Platform.OS == "android"
+                  ? insets.bottom + 60
+                  : insets.bottom + 50,
+            },
+            tabBarShowLabel: false,
           }}
-        />
-        <Tab.Screen
-          name="HomeBase"
-          component={HomeBase}
-          options={{
-            tabBarIcon: ({ focused }) => (
-              <Icon
-                source={focused ? "home" : "home-outline"}
-                size={45}
-                color={isThemeDark ? "white" : "black"}
-              />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Camera"
-          component={Home}
-          options={{
-            tabBarIcon: ({ focused }) => (
-              <IconButton
-                icon={focused ? "qrcode" : "qrcode"}
-                size={45}
-                iconColor={isThemeDark ? "white" : "black"}
-                onPress={() => navigation.navigate("CameraTest")}
-              />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Map"
-          component={Map}
-          options={{
-            tabBarIcon: ({ focused }) => (
-              <Icon
-                source={focused ? "map-marker" : "map-marker-outline"}
-                size={45}
-                color={isThemeDark ? "white" : "black"}
-              />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="SendMoney"
-          component={MoneyTransfer}
-          options={{
-            tabBarIcon: ({ focused }) => (
-              <IconButton
-                icon={focused ? "swap-horizontal" : "swap-horizontal"}
-                size={45}
-                iconColor={isThemeDark ? "white" : "black"}
-                onPress={() => console.log("selam")}
-              />
-            ),
-          }}
-        />
-      </Tab.Navigator>
+          initialRouteName="HomeBase"
+          safeAreaInsets={insets}
+        >
+          <Tab.Screen
+            name="Expenses"
+            component={Expenses}
+            options={{
+              tabBarIcon: ({ focused }) => (
+                <Icon
+                  source={
+                    focused ? "credit-card-clock" : "credit-card-clock-outline"
+                  }
+                  size={45}
+                  color={isThemeDark ? "white" : "black"}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="HomeBase"
+            component={HomeBase}
+            options={{
+              tabBarIcon: ({ focused }) => (
+                <Icon
+                  source={focused ? "home" : "home-outline"}
+                  size={45}
+                  color={isThemeDark ? "white" : "black"}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Camera"
+            component={Home}
+            options={{
+              tabBarIcon: ({ focused }) => (
+                <IconButton
+                  icon={focused ? "qrcode" : "qrcode"}
+                  size={45}
+                  iconColor={isThemeDark ? "white" : "black"}
+                  onPress={() => navigation.navigate("CameraTest")}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Map"
+            component={Map}
+            options={{
+              tabBarIcon: ({ focused }) => (
+                <Icon
+                  source={focused ? "map-marker" : "map-marker-outline"}
+                  size={45}
+                  color={isThemeDark ? "white" : "black"}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="SendMoney"
+            component={MoneyTransfer}
+            options={{
+              tabBarIcon: ({ focused }) => (
+                <IconButton
+                  rippleColor={"rgba(0,0,0,0)"}
+                  icon={focused ? "swap-horizontal" : "swap-horizontal"}
+                  size={45}
+                  iconColor={isThemeDark ? "white" : "black"}
+                  onPress={() => setShowSendMoney(true)}
+                />
+              ),
+            }}
+          />
+        </Tab.Navigator>
+        <Modal
+          visible={showSendMoney}
+          presentationStyle="formSheet"
+          animationType="slide"
+        >
+          <MoneyTransfer showSendMoney={setShowSendMoney} />
+        </Modal>
+      </>
       {/* </GestureHandlerRootView> */}
     </>
   );

@@ -15,6 +15,7 @@ import Map from "./pages/Map";
 import Expenses from "./pages/Expenses";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Opportunities from "./pages/Opportunities";
+import Feedback from "./pages/Feedback";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -76,9 +77,9 @@ export default function App() {
           <Stack.Screen name="Settings" component={Settings} />
           <Stack.Screen name="Notifications" component={Notifications} />
           <Stack.Screen name="Refund" component={Refund} />
-          <Stack.Screen name="Map" component={Map} />
           {/* <Stack.Screen name="Expenses" component={Expenses} /> */}
           <Stack.Screen name="Opportunities" component={Opportunities} />
+          <Stack.Screen name="Feedback" component={Feedback} />
         </Stack.Navigator>
         <ModalMenu />
       </NavigationContainer>

@@ -68,6 +68,7 @@ export default function Map({ navigation }) {
                   bool: true,
                   id: _index,
                   content: item.content,
+                  location: { la: item.latitude, lo: item.longitude },
                 });
               }}
               onSelect={(e) => {
@@ -75,6 +76,7 @@ export default function Map({ navigation }) {
                   bool: true,
                   id: _index,
                   content: item.content,
+                  location: { la: item.latitude, lo: item.longitude },
                 });
               }}
               onDeselect={() =>
@@ -100,7 +102,11 @@ export default function Map({ navigation }) {
           );
         })}
       </MapView>
-      <ModalWindowBottom visible={selected.bool} content={selected.content} />
+      <ModalWindowBottom
+        visible={selected.bool}
+        content={selected.content}
+        location={selected.location}
+      />
     </View>
   );
 }
