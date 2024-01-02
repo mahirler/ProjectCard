@@ -1,17 +1,17 @@
 import { View, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useState } from "react";
-import { Text } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 import { Field, Formik } from "formik";
-import { CustomInput } from "../components/form/CustomInput";
-import { PasswordInput } from "../components/form/PasswordInput";
+import { CustomInput } from "../components/form/CustomInput.js";
+import { PasswordInput } from "../components/form/PasswordInput.js";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { SignInValidationSchema } from "../validations/SignInValidations";
-import SubmitButton from "../components/form/SubmitButton";
-import usePreferences from "../contexts/usePreferences";
+import SubmitButton from "../components/form/SubmitButton.js";
+import usePreferences from "../contexts/usePreferences.js";
+import { ProfileUpdateSchema } from "../validations/ProfileUpdateValidation.js.js";
 
 
-export default function SignUp({ navigation }) {
+export default function ProfileUpdate({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const {toggleTheme, isThemeDark, theme} = usePreferences();
 
@@ -43,7 +43,7 @@ export default function SignUp({ navigation }) {
       fontSize: 30,
       fontWeight:"bold",
       color:theme.colors.textColor,
-      marginBottom:30
+      bottom:70
     },
     errorText: {
       color: "#e45735",
@@ -66,14 +66,13 @@ export default function SignUp({ navigation }) {
     },
     buttonStyle:{
       minWidth:150,
-      width:"90%",
+      width:"40%",
       backgroundColor: 'black',
       borderWidth:2,
       borderRadius:30,
       margin:10,
       },
   });
-
 
   const handleDismissKeyboard = () => {
     Keyboard.dismiss();
@@ -83,7 +82,7 @@ export default function SignUp({ navigation }) {
     console.log(values);
     handleDismissKeyboard();
     setIsLoading(true);
-    navigation.navigate("Home")
+    navigation.navigate("Profile")
 
     setTimeout(() => {
       setIsLoading(false);
@@ -103,9 +102,9 @@ export default function SignUp({ navigation }) {
     })
   );
 
-  const initialValues = {name:"",password:"",}
-  initialTouched={ name: false, password: false,}
-  const fields = ['name','password'];  
+  const initialValues = {phoneNumber:"",email:"",password:"", confirPassword:""}
+  initialTouched={ phoneNumber: false, email: false,password: false, confirPassword: false}
+  const fields = ['phoneNumber','email', 'password', 'confirPassword'];  
 
 
   return (
@@ -114,42 +113,59 @@ export default function SignUp({ navigation }) {
     <StatusBar style={isThemeDark ? "light" : "dark"} backgroundColor={theme.colors.backgroundColor}/>
     <SafeAreaView style={styles.safeAreaView} >
       <Formik
-          validationSchema={SignInValidationSchema}
+          validationSchema={ProfileUpdateSchema}
           initialValues={initialValues}
           initialTouched={initialTouched}
           onSubmit={onSubmit}
           >
            {({handleSubmit, errors, touched,}) => (
             <View style={styles.container}>
-            <Text style={styles.titleText}>Kullanıcı Bilgileri</Text>  
+              <View style={{ }}>
+                <Text style={styles.titleText}>Kullanıcı Bilgileri</Text> 
+              </View> 
+              
                 <Field
                 component={CustomInput}
-                name="name"
-                placeholder="Name"
+                name="phoneNumber"
+                placeholder="Telefon Numarası"
+                />
+                <Field
+                component={CustomInput}
+                name="email"
+                placeholder="Email"
                 />
                 <Field
                 component={PasswordInput}
                 name="password"
-                placeholder="Password"
+                placeholder="Şifre"
+                />
+                <Field
+                component={PasswordInput}
+                name="confirmPassword"
+                placeholder="Doğrulama Şifresi"
                 />
 
               {errorText(errors, touched)}
-                
-                <View style={styles.navigationTextContainer}>
-                  <Text style={styles.signInText.phrase} >Hesabın yoksa  </Text>
-                  <Text 
-                    style={styles.signInText.link} onPress={() => navigation.navigate("SignUp")}>
-                      Kayıt ol
-                  </Text>
-                </View>
 
-                <SubmitButton 
-                onPress={handleSubmit}
-                isLoading={isLoading}
-                style={styles.buttonStyle}
-                >
-                  Giriş yap
-                </SubmitButton>
+                <View style={{
+                  flexDirection:'row',
+                  justifyContent:'space-around'
+                }}>
+                  <SubmitButton 
+                  onPress={handleSubmit}
+                  isLoading={isLoading}
+                  style={styles.buttonStyle}
+                  >
+                    Güncelle
+                  </SubmitButton>
+                  <Button 
+                  style={styles.buttonStyle}
+                  onPress={()=> navigation.navigate("Profile")}
+                  textColor="white"
+                  >
+                    Geri
+                  </Button>
+                </View>
             </View>
           )}
           </Formik>

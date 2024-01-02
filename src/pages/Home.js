@@ -59,7 +59,10 @@ export default function Home({ navigation }) {
     {
       label: "Destek Merkezi",
       icon: "lifebuoy",
-      onPress: () => {},
+      onPress: () => {
+        navigation.navigate("SearchPage");
+        setVisible(false);
+      },
     },
     {
       label: "SSS",
@@ -78,9 +81,12 @@ export default function Home({ navigation }) {
 
   const ProfileModal = [
     {
-      label: "Profil Düzenle",
+      label: "Profil",
       icon: "account-edit-outline",
-      onPress: () => {},
+      onPress: () => {
+        navigation.navigate("Profile");
+        setVisible(false)
+      },
     },
     {
       label: "Arkadaşlar",
@@ -106,7 +112,7 @@ export default function Home({ navigation }) {
       label: "Güvenli Çıkış",
       icon: "logout",
       onPress: () => {
-        navigation.navigate("SignUpFirstPart");
+        navigation.navigate("SignUp");
         setVisible(false);
       },
     },

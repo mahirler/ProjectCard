@@ -17,6 +17,9 @@ import Settings from "./pages/Settings";
 import Notifications from "./pages/Notifications";
 import Refund from "./pages/Refund";
 import Map from "./pages/Map";
+import Profile from "./pages/Profile";
+import ProfileUpdate from "./pages/ProfileUpdate";
+import SearchPage from "./pages/SearchPage";
 
 const Stack = createNativeStackNavigator();
 
@@ -74,6 +77,9 @@ export default function App() {
           <Stack.Screen name="CameraTest" component={CameraTest} />
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="SignIn" component={SignIn} />
+          <Stack.Screen name="Profile" component={Profile} />
+          <Stack.Screen name="ProfileUpdate" component={ProfileUpdate} />
+          <Stack.Screen name="SearchPage" component={SearchPage} />
           <Stack.Screen name="Settings" component={Settings} />
           <Stack.Screen name="Notifications" component={Notifications} />
           <Stack.Screen name="Refund" component={Refund} />
