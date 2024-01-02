@@ -1,7 +1,6 @@
 import { View, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useState } from "react";
-import { Text } from "react-native-paper";
-import usePreferences from "../contexts/usePreferences";
+import { Text, useTheme,} from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 import { Field, Formik } from "formik";
 import { CustomInput } from "../components/form/CustomInput";
@@ -13,17 +12,31 @@ import CustomModalView from "../components/form/CustomModalView";
 import AgreementCheckBox from "../components/form/AgreementCheckBox";
 
 
+export const themeColor = '#1e1e1e';
+export const textColor = '#ffffffdd';
+
 export default function SignUp({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
-  const { toggleTheme, isThemeDark, theme } = usePreferences();
+  const theme = useTheme();
 
   const styles = StyleSheet.create({
     container: {
       flex:1,
       flexDirection:'column',
       justifyContent : "center",
-      backgroundColor: theme.colors.backgroundColor,
+      backgroundColor: "white",
       alignItems: "center",
+    },
+    signUpView:{
+      minWidth:150,
+      backgroundColor: 'white',
+      borderWidth:2,
+      borderColor: 'black',
+      borderRadius:10,
+      borderColor: 'gray',
+      margin:10,
+      justifyContent:"center",
+      alignItems:"center",
     },
     navigationTextContainer:{
       flexDirection:"row",
@@ -33,11 +46,11 @@ export default function SignUp({ navigation }) {
     },
     signInText:{
       link:{
-        color:isThemeDark ? "white" : "black",
+        color:'black',
         fontWeight:"bold"
       },
       phrase:{
-        color:isThemeDark ? "gray" : "#383838",
+        color:"gray",
         fontWeight:"bold"
       }
     },
@@ -48,31 +61,30 @@ export default function SignUp({ navigation }) {
       width:"90%",
     },
     titleText:{
-      color: theme.colors.textColor,
       fontSize: 30,
       fontWeight:"bold",
       marginBottom:30
     },
     errorText: {
-      color: "#e45735",
+      color: "#A10000",
     },
     safeAreaView: {
       flex: 1,
+      backgroundColor:"white",
       justifyContent:"center",
     },
     button: {
-      backgroundColor: isThemeDark? "#212124" : "black",
-      borderColor: isThemeDark? "#212124" : "black",
+      backgroundColor: themeColor,
       paddingHorizontal: 16,
       paddingVertical: 8,
       borderWidth:2,
-      borderRadius:20,
-      minWidth:110,
+      borderRadius:30,
+      minWidth:100,
       alignItems:"center",
       alignContent:"center",
     },
     buttonText: {
-      color: "white",
+      color: textColor,
       fontSize: 16,
     },
     textHeader: {
@@ -109,19 +121,14 @@ export default function SignUp({ navigation }) {
   });
 
   const progressSteps = {
-  borderWidth: 3,
-  activeStepIconBorderColor: theme.colors.textColor,
-  completedProgressBarColor: theme.colors.textColor,
-  activeStepIconColor: theme.colors.textColor,
-  disabledStepIconColor:isThemeDark ? "#212124" : "#ebebe4",
-  completedStepIconColor: theme.colors.textColor,
-  progressBarColor: isThemeDark ? "#212124" : "#ebebe4",
-  activeLabelColor: theme.colors.textColor,
-  activeStepNumColor: theme.colors.backgroundColor,
-  completedCheckColor: theme.colors.backgroundColor,
-  containerStyles:{
-    backgroundColor:theme.colors.backgroundColor,
-  }
+    borderWidth: 3,
+    activeStepIconBorderColor: themeColor,
+    completedProgressBarColor: themeColor,
+    activeStepIconColor: themeColor,
+    activeLabelColor: themeColor,
+    completedStepNumColor: themeColor,
+    completedStepIconColor: themeColor,
+    activeStepNumColor: textColor,
   };
   const progressStep = {
     nextBtnText: 'Sonraki  >',
@@ -176,7 +183,7 @@ export default function SignUp({ navigation }) {
   return (
     <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
     <>
-    <StatusBar style={isThemeDark ? "light" : "dark"} backgroundColor={theme.colors.backgroundColor}/>
+    <StatusBar barStyle="dark-content" />
     <SafeAreaView style={styles.safeAreaView} >
       <Formik
           validationSchema={SignUpValidationSchema}
@@ -185,7 +192,7 @@ export default function SignUp({ navigation }) {
           onSubmit={onSubmit}
           validateOnMount
           >
-           {({handleSubmit, errors, touched, setTouched, values, setFieldValue}) => (
+           {({handleSubmit, errors, touched, setTouched, handleChange, values, setFieldValue}) => (
             <ProgressSteps {...progressSteps} >
 
             <ProgressStep {...firstProgressStep} 
@@ -247,7 +254,7 @@ export default function SignUp({ navigation }) {
                   <Field
                   component={CustomInput}
                   name="phoneNumber"
-                  placeholder="Phone Number"
+                  placeholder="PhoneNumber"
                   keyboardType="numeric"
                   />
                   {errorText(errors, touched)}

@@ -4,11 +4,9 @@ import { StatusBar } from 'expo-status-bar'
 import Modal from 'react-native-paper/src/components/Modal'
 import { Portal } from 'react-native-paper'
 import { View, StyleSheet, ScrollView } from 'react-native'
-import {  Animated, Easing } from 'react-native'
-import usePreferences from '../../contexts/usePreferences'
+import { Pressable, Animated, Easing } from 'react-native'
 
 const CustomModalView = ({children, labelText}) => {
-  const { toggleTheme, isThemeDark, theme } = usePreferences();
   const [modalVisible, setModalVisible]= useState(false);
   const scaleValue = new Animated.Value(1)
 
@@ -38,7 +36,7 @@ const CustomModalView = ({children, labelText}) => {
   
   const styles= StyleSheet.create({
     button: {
-      backgroundColor: isThemeDark? "#212124" : "#1e1e1e",
+      backgroundColor: '#31a125',
       paddingHorizontal: 8,
       paddingVertical: 4,
       borderWidth:2,
@@ -46,10 +44,10 @@ const CustomModalView = ({children, labelText}) => {
       minWidth:100,  
       width:'85%',
       minHeight:50,
-      transform:[{scale:scaleValue}],
+      transform:[{scale:scaleValue}]
     },
     textStyle:{
-      color: theme.colors.textColor,
+      color: 'black',
       fontWeight: 'bold',
     },
     modalStyle:{
@@ -60,7 +58,7 @@ const CustomModalView = ({children, labelText}) => {
     },
     modalContainer:{
       margin: 20,
-      backgroundColor: theme.colors.backgroundColor,
+      backgroundColor: 'white',
       borderRadius: 20,
       width:'80%',
       height:'80%',
@@ -75,8 +73,7 @@ const CustomModalView = ({children, labelText}) => {
       elevation: 5,
     },
     ScrollView:{
-      padding:15,
-      paddingStart:10,
+      padding:10,
       height:'auto',
       width:'auto'
     },
@@ -102,7 +99,7 @@ const CustomModalView = ({children, labelText}) => {
     },
     ModalTitle:{
       fontWeight:'bold',
-      fontSize:20,
+      width:'100%',
     }
   })
   return(
@@ -117,12 +114,12 @@ const CustomModalView = ({children, labelText}) => {
       <StatusBar backgroundColor={modalVisible ? 'rgba(0, 0, 0, 0.85)' : 'transparent'} translucent />
       <View style={styles.modalContainer}>
         <View style={styles.ModalTitleView}>
-          <Text style={styles.ModalTitle}>
+          <Text>
             {labelText}
           </Text>
         </View>
-        <ScrollView style={styles.ScrollView}>
-          <Text>djkafhlkasdhflkajdhklfjashdfkjadshflasdjfhlaskdjflaksjdfhlkajsdfhlkajsdfhlasdfjkahlsdf
+        <ScrollView style={{...styles.ScrollView,}}>
+          <Text>sdjkafhlkasdhflkajdhklfjashdfkjadshflasdjfhlaskdjflaksjdfhlkajsdfhlkajsdfhlasdfjkahlsdf
             sadflaksjdfhlasjkdfhlajsdfhlakjsdfhlaksjdfhlkasjdfhlkajsdfhlkajsdfhlkajsdfhlasjdfhlaskdjf
             dfhlaksdjhflksjdfhlkajdfhlkajsdfhlkasjdfhlkasdjfhlaksdjfhlakjsdfhlkajsdfhlkajsdfhlf
             asdfhalskjdfhlkasjdfahslkdjfhlsdkjfas
@@ -206,7 +203,7 @@ const CustomModalView = ({children, labelText}) => {
           </Text>
         </ScrollView>
         <View style={styles.ModalFooter}>
-          <Button rippleColor={isThemeDark? "#212124" : "#1e1e1e"} onPressIn={startScaleAnimation} style={styles.button} textColor={"white"} onPress={closeModal}>Kapat</Button>
+          <Button onPressIn={startScaleAnimation} style={styles.button} onPress={closeModal}>Kapat</Button>
         </View>
       </View>
     </Modal>

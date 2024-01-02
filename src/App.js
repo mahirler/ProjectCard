@@ -11,13 +11,14 @@ import CameraTest from "./pages/CameraTest";
 import Settings from "./pages/Settings";
 import Notifications from "./pages/Notifications";
 import Refund from "./pages/Refund";
-import Profile from "./pages/Profile";
-import ProfileUpdate from "./pages/ProfileUpdate";
-import SearchPage from "./pages/SearchPage";
+import Map from "./pages/Map";
+import Expenses from "./pages/Expenses";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Opportunities from "./pages/Opportunities";
 import Feedback from "./pages/Feedback";
 
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   // const [showHeader, setShowHeader] = useState(true);
@@ -73,12 +74,10 @@ export default function App() {
           <Stack.Screen name="CameraTest" component={CameraTest} />
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="SignIn" component={SignIn} />
-          <Stack.Screen name="Profile" component={Profile} />
-          <Stack.Screen name="ProfileUpdate" component={ProfileUpdate} />
-          <Stack.Screen name="SearchPage" component={SearchPage} />
           <Stack.Screen name="Settings" component={Settings} />
           <Stack.Screen name="Notifications" component={Notifications} />
           <Stack.Screen name="Refund" component={Refund} />
+          {/* <Stack.Screen name="Expenses" component={Expenses} /> */}
           <Stack.Screen name="Opportunities" component={Opportunities} />
           <Stack.Screen name="Feedback" component={Feedback} />
         </Stack.Navigator>
