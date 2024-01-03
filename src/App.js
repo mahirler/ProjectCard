@@ -16,6 +16,7 @@ import ProfileUpdate from "./pages/ProfileUpdate";
 import SearchPage from "./pages/SearchPage";
 import Opportunities from "./pages/Opportunities";
 import Feedback from "./pages/Feedback";
+import AccountHistory from "./pages/AccountHistory";
 
 const Stack = createNativeStackNavigator();
 
@@ -76,6 +77,7 @@ export default function App() {
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="ProfileUpdate" component={ProfileUpdate} />
           <Stack.Screen name="SearchPage" component={SearchPage} />
+          <Stack.Screen name="AccountHistory" component={AccountHistory} />
           <Stack.Screen name="Settings" component={Settings} />
           <Stack.Screen name="Notifications" component={Notifications} />
           <Stack.Screen name="Refund" component={Refund} />
