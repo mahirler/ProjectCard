@@ -49,7 +49,7 @@ export default function Home({ navigation }) {
       label: "Destek Merkezi",
       icon: "lifebuoy",
       onPress: () => {
-        navigation.navigate("SearchPage");
+        navigation.navigate("Feedback");
         setVisible(false);
       },
     },
@@ -107,15 +107,7 @@ export default function Home({ navigation }) {
     },
   ];
 
-  const searchBarAnimatedStyle = useAnimatedStyle(() => ({
-    width: searBarWidth.value,
-  }));
-
   const insets = useSafeAreaInsets();
-  useEffect(() => {
-    if (showSearch) searBarWidth.value = withTiming("80%");
-    else searBarWidth.value = withTiming("0%");
-  }, [showSearch]);
 
   return (
     <>
@@ -124,73 +116,42 @@ export default function Home({ navigation }) {
         show={true}
         content={
           <>
-            {!showSearch && (
-              <>
-                <Appbar.Action
-                  icon="view-headline"
-                  color={theme.colors.iconColor}
-                  rippleColor="rgba(0,0,0,0)"
-                  size={30}
-                  onPress={() => {
-                    setContent(MenuModal);
-                    setVisible(true);
-                  }}
-                />
-                <Appbar.Action
-                  icon="bell-outline"
-                  color={theme.colors.iconColor}
-                  size={30}
-                  onPress={() => navigation.navigate("Notifications")}
-                />
-                <Text style={{ fontSize: 40, fontWeight: "500" }}>BENBUY</Text>
-                <Appbar.Action
-                  icon="magnify"
-                  color={theme.colors.iconColor}
-                  rippleColor="rgba(0,0,0,0)"
-                  size={30}
-                  onPress={() => {
-                    setShowSearch(true);
-                  }}
-                />
-              </>
-            )}
-            <Animated.View
-              style={[
-                {
-                  display: "flex",
-                  flexDirection: "row-reverse",
-                },
-                searchBarAnimatedStyle,
-              ]}
-            >
-              {showSearch && (
-                <Searchbar
-                  style={{ width: "100%" }}
-                  placeholder="Ara"
-                  iconColor={!showSearch && theme.colors.backgroundColor}
-                />
-              )}
-              {showSearch && (
-                <IconButton
-                  icon={"close"}
-                  size={40}
-                  onPress={() => setShowSearch(false)}
-                  style={{ position: "absolute", top: 0, margin: 0 }}
-                />
-              )}
-            </Animated.View>
-            {!showSearch && (
-              <Appbar.Action
-                icon="account-circle-outline"
-                color={theme.colors.iconColor}
-                rippleColor="rgba(0,0,0,0)"
-                onPress={() => {
-                  setContent(ProfileModal);
-                  setVisible(true);
-                }}
-                size={30}
-              />
-            )}
+            <Appbar.Action
+              icon="view-headline"
+              color={theme.colors.iconColor}
+              rippleColor="rgba(0,0,0,0)"
+              size={30}
+              onPress={() => {
+                setContent(MenuModal);
+                setVisible(true);
+              }}
+            />
+            <Appbar.Action
+              icon="bell-outline"
+              color={theme.colors.iconColor}
+              size={30}
+              onPress={() => navigation.navigate("Notifications")}
+            />
+            <Text style={{ fontSize: 40, fontWeight: "500" }}>BENBUY</Text>
+            <Appbar.Action
+              icon="magnify"
+              color={theme.colors.iconColor}
+              rippleColor="rgba(0,0,0,0)"
+              size={30}
+              onPress={() => {
+                navigation.navigate("SearchPage");
+              }}
+            />
+            <Appbar.Action
+              icon="account-circle-outline"
+              color={theme.colors.iconColor}
+              rippleColor="rgba(0,0,0,0)"
+              onPress={() => {
+                setContent(ProfileModal);
+                setVisible(true);
+              }}
+              size={30}
+            />
           </>
         }
       />

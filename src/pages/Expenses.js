@@ -92,6 +92,7 @@ export default function Expenses({ navigation }) {
           {data.map((item, index) => {
             return (
               <TouchableOpacity
+                key={index}
                 activeOpacity={1}
                 onPress={item.svg.onPress}
                 style={{ width: "100%", alignItems: "center" }}

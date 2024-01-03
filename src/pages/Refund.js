@@ -52,7 +52,7 @@ export default function Refund({ navigation }) {
       svg: { fill: "grey", onPress: () => setSelected(4) },
       arc: selected == 4 && { outerRadius: "130%", cornerRadius: 10 },
       icon: "steam",
-      type: "Steam",
+      type: "Netflix",
     },
     {
       key: 6,

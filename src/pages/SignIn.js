@@ -1,4 +1,9 @@
-import { View, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { useState } from "react";
 import { Text } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
@@ -10,70 +15,68 @@ import { SignInValidationSchema } from "../validations/SignInValidations";
 import SubmitButton from "../components/form/SubmitButton";
 import usePreferences from "../contexts/usePreferences";
 
-
 export default function SignUp({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
-  const {toggleTheme, isThemeDark, theme} = usePreferences();
+  const { toggleTheme, isThemeDark, theme } = usePreferences();
 
   const styles = StyleSheet.create({
     container: {
-      flex:1,
-      flexDirection:'column',
-      justifyContent : "center",
+      flex: 1,
+      flexDirection: "column",
+      justifyContent: "center",
       backgroundColor: theme.colors.backgroundColor,
       alignItems: "center",
     },
-    navigationTextContainer:{
-      flexDirection:"row",
-      justifyContent:"center",
-      alignItems:"center",
-      marginTop:15
+    navigationTextContainer: {
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 15,
     },
-    signInText:{
-      link:{
-        color:isThemeDark ? "white" : "black",
-        fontWeight:"bold"
+    signInText: {
+      link: {
+        color: isThemeDark ? "white" : "black",
+        fontWeight: "bold",
       },
-      phrase:{
-        color:isThemeDark ? "gray" : "#383838",
-        fontWeight:"bold"
-      }
+      phrase: {
+        color: isThemeDark ? "gray" : "#383838",
+        fontWeight: "bold",
+      },
     },
-    titleText:{
+    titleText: {
       fontSize: 30,
-      fontWeight:"bold",
-      color:theme.colors.textColor,
-      marginBottom:30
+      fontWeight: "bold",
+      color: theme.colors.textColor,
+      marginBottom: 30,
     },
     errorText: {
       color: "#e45735",
     },
     safeAreaView: {
       flex: 1,
-      backgroundColor:theme.colors.backgroundColor,
-      justifyContent:"center",
+      backgroundColor: theme.colors.backgroundColor,
+      justifyContent: "center",
     },
     button: {
-      backgroundColor: isThemeDark? "#212124" : "#1e1e1e",
-      borderColor: isThemeDark? "#212124" : "#1e1e1e",
+      backgroundColor: isThemeDark ? "#212124" : "#1e1e1e",
+      borderColor: isThemeDark ? "#212124" : "#1e1e1e",
       paddingHorizontal: 16,
       paddingVertical: 8,
-      borderWidth:2,
-      borderRadius:20,
-      minWidth:110,
-      alignItems:"center",
-      alignContent:"center",
+      borderWidth: 2,
+      borderRadius: 20,
+      minWidth: 110,
+      alignItems: "center",
+      alignContent: "center",
     },
-    buttonStyle:{
-      minWidth:150,
-      width:"90%",
-      backgroundColor: 'black',
-      borderWidth:2,
-      borderRadius:30,
-      margin:10,
-      },
+    buttonStyle: {
+      minWidth: 150,
+      width: "90%",
+      backgroundColor: "black",
+      borderWidth: 2,
+      borderRadius: 30,
+      margin: 10,
+    },
   });
-
 
   const handleDismissKeyboard = () => {
     Keyboard.dismiss();
@@ -83,14 +86,14 @@ export default function SignUp({ navigation }) {
     console.log(values);
     handleDismissKeyboard();
     setIsLoading(true);
-    navigation.navigate("Home")
+    navigation.navigate("Home");
 
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
   };
 
-  const errorText = ( errorObject, touchedObject ) => (
+  const errorText = (errorObject, touchedObject) =>
     Object.keys(errorObject).map((fieldName) => {
       if (touchedObject[fieldName]) {
         return (
@@ -100,62 +103,63 @@ export default function SignUp({ navigation }) {
         );
       }
       return null;
-    })
-  );
+    });
 
-  const initialValues = {name:"",password:"",}
-  initialTouched={ name: false, password: false,}
-  const fields = ['name','password'];  
-
+  const initialValues = { name: "", password: "" };
+  initialTouched = { name: false, password: false };
+  const fields = ["name", "password"];
 
   return (
-    <TouchableWithoutFeedback onPress={handleDismissKeyboard} accessible={false}>
-    <>
-    <StatusBar style={isThemeDark ? "light" : "dark"} backgroundColor={theme.colors.backgroundColor}/>
-    <SafeAreaView style={styles.safeAreaView} >
-      <Formik
-          validationSchema={SignInValidationSchema}
-          initialValues={initialValues}
-          initialTouched={initialTouched}
-          onSubmit={onSubmit}
+    <TouchableWithoutFeedback
+      onPress={handleDismissKeyboard}
+      accessible={false}
+    >
+      <>
+        <StatusBar
+          style={isThemeDark ? "light" : "dark"}
+          backgroundColor={theme.colors.backgroundColor}
+        />
+        <SafeAreaView style={styles.safeAreaView}>
+          <Formik
+            validationSchema={SignInValidationSchema}
+            initialValues={initialValues}
+            initialTouched={initialTouched}
+            onSubmit={onSubmit}
           >
-           {({handleSubmit, errors, touched,}) => (
-            <View style={styles.container}>
-            <Text style={styles.titleText}>Kullanıcı Bilgileri</Text>  
+            {({ handleSubmit, errors, touched }) => (
+              <View style={styles.container}>
+                <Text style={styles.titleText}>Kullanıcı Bilgileri</Text>
+                <Field component={CustomInput} name="name" placeholder="Name" />
                 <Field
-                component={CustomInput}
-                name="name"
-                placeholder="Name"
-                />
-                <Field
-                component={PasswordInput}
-                name="password"
-                placeholder="Password"
+                  component={PasswordInput}
+                  name="password"
+                  placeholder="Password"
                 />
 
-              {errorText(errors, touched)}
-                
+                {errorText(errors, touched)}
+
                 <View style={styles.navigationTextContainer}>
-                  <Text style={styles.signInText.phrase} >Hesabın yoksa  </Text>
-                  <Text 
-                    style={styles.signInText.link} onPress={() => navigation.navigate("SignUp")}>
-                      Kayıt ol
+                  <Text style={styles.signInText.phrase}>Hesabın yoksa </Text>
+                  <Text
+                    style={styles.signInText.link}
+                    onPress={() => navigation.navigate("SignUp")}
+                  >
+                    Kayıt ol
                   </Text>
                 </View>
 
-                <SubmitButton 
-                onPress={handleSubmit}
-                isLoading={isLoading}
-                style={styles.buttonStyle}
+                <SubmitButton
+                  onPress={handleSubmit}
+                  isLoading={isLoading}
+                  style={styles.buttonStyle}
                 >
                   Giriş yap
                 </SubmitButton>
-            </View>
-          )}
+              </View>
+            )}
           </Formik>
-    </SafeAreaView>
-    </>
+        </SafeAreaView>
+      </>
     </TouchableWithoutFeedback>
-
   );
 }
