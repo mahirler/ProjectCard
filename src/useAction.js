@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 // import all the components we are going to use
 import {
@@ -13,7 +13,6 @@ import {
 
 const useAction = (text) => {
     const [search, setSearch] = useState(text);
-    const [filteredDataSource, setFilteredDataSource] = useState([]);
     const [masterDataSource, setMasterDataSource] = useState([]);
     const [error, setError] = useState();
     const [isLoading, setIsLoading] = useState();
@@ -64,31 +63,22 @@ const useAction = (text) => {
     useEffect(() => {
       try {
         setMasterDataSource(masterData);
-        setFilteredDataSource(masterData);
       } catch (error) {
         setError(error);
         console.log(error)
       }
     },[])
 
-    useEffect(() => {
-        searchFilterFunction(search);
-    },[search])
-
-    const searchFilterFunction = (text) => {
-        if (text) {
-          const newData = masterDataSource.filter(function (item) {
-            const itemData = item.title
-              ? item.title.toUpperCase()
-              : ''.toUpperCase();
-            const textData = text.toUpperCase();
-            return itemData.indexOf(textData) > -1;
-          });
-          setFilteredDataSource(newData);
-        } else {
-          setFilteredDataSource(masterDataSource);
-        }
-      };
+    const filteredDataSource = useMemo(() => {
+      if (!search) {
+        return masterDataSource;
+      }
+  
+      const textData = search.toUpperCase();
+      return masterDataSource.filter((item) =>
+        item.title ? item.title.toUpperCase().includes(textData) : false
+      );
+    }, [search, masterDataSource]);
 
   return {search, setSearch, filteredDataSource, error, isLoading}
 }
