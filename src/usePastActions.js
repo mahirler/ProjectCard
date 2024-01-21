@@ -12,7 +12,7 @@ const usePastActions = (text) => {
     const masterData = [
         {
             id: 1,
-            title: 'Ziraatbank',
+            person: 'Ziraatbank',
             color:'red',
             type:'Para Transferi',
             amount:-200,
@@ -20,8 +20,17 @@ const usePastActions = (text) => {
             date: new Date('2023-01-02T11:22:00'),
         },
         {
+            id: 11,
+            person: 'Semih Saygıner',
+            color:'blue',
+            type:'Para Transferi',
+            amount:200,
+            hour:'11.22',
+            date: new Date('2023-01-02'),
+        },
+        {
             id: 2,
-            title: 'Ziraatbank',
+            person: 'Ziraatbank',
             color:'red',
             type:'Para Transferi',
             amount:300,
@@ -30,7 +39,7 @@ const usePastActions = (text) => {
         },
         {
             id: 3,
-            title: 'Ziraatbank',
+            person: 'Ziraatbank',
             color:'red',
             type:'Para Transferi',
             amount:-300,
@@ -39,7 +48,7 @@ const usePastActions = (text) => {
         },
         {
             id: 4,
-            title: 'Ziraatbank',
+            person: 'Ziraatbank',
             color:'red',
             type:'Para Transferi',
             amount:-400,
@@ -48,7 +57,7 @@ const usePastActions = (text) => {
         },
         {
             id: 5,
-            title: 'Vakıfbank',
+            person: 'Vakıfbank',
             color:'yellow',
             type:'Para Transferi',
             amount:1500,
@@ -71,7 +80,7 @@ const usePastActions = (text) => {
       const filteredData = !search
         ? masterDataSource
         : masterDataSource.filter((item) =>
-            item.title ? item.title.toUpperCase().includes(search.toUpperCase()) : false
+            item.person ? item.person.toUpperCase().includes(search.toUpperCase()) : false
           );
     
       // Group the filtered data by date without hour

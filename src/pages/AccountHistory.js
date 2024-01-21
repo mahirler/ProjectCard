@@ -1,47 +1,62 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import AppbarHeader from '../components/AppbarHeader'
 import { StatusBar } from 'expo-status-bar'
 import usePreferences from '../contexts/usePreferences'
-import { Appbar, Text, TextInput } from 'react-native-paper'
-import { Keyboard, StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
+import { Appbar, Portal, Text, TextInput } from 'react-native-paper'
+import { Keyboard, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import usePastActions from '../usePastActions'
+import ActionModal from '../components/AccountHistory/ActionModal'
 
 const AccountHistory = ({navigation}) => {
     const{toggleTheme, isThemeDark, theme} = usePreferences();
     const {search, setSearch, filteredDataSource} = usePastActions();
+    const [isActionModalVisible, setIsActionModalVisible] = useState(false);
+    const [currentActionInfo, setCurrentActionInfo] = useState();
 
     const handleDismissKeyboard = () => {
         Keyboard.dismiss();
     };
 
-    const PastActivity = ({label, type, amount, hour, color}) => (
-        <View style={[styles.pastActivityView, {backgroundColor:theme.colors.backgroundColor}]}>
+    const PastAction = ({label, type, amount, hour, color, onClick}) => (
+        <TouchableOpacity 
+        style={[styles.PastActionView, {backgroundColor:theme.colors.backgroundColor}]}
+        onPress={onClick}  
+        >
             
-            <View style={{...styles.pastActivityColorView, backgroundColor:color}}/>
+            <View style={{...styles.PastActionColorView, backgroundColor:color}}/>
             <View>
-                <Text style={[styles.pastActivityText, {fontSize:20}]}
+                <Text style={[styles.PastActionText, {fontSize:20}]}
                 >{label}
                 </Text>
-                <Text style={{...styles.pastActivityText, color:'gray', fontSize:12}}>
+                <Text style={{...styles.PastActionText, color:'gray', fontSize:12}}>
                 {type}
                 </Text>
             </View>
             <View style={{
                 marginStart:'auto'
             }}>
-                <Text style={{...styles.pastActivityText,fontSize:25, color: amount>0 ? 'green' : 'red'}}>
+                <Text style={{...styles.PastActionText,fontSize:25, color: amount>0 ? 'green' : 'red'}}>
                     {amount}TL
                 </Text>
-                <Text style={{...styles.pastActivityText, marginStart:'auto', color:'gray'}}>
+                <Text style={{...styles.PastActionText, marginStart:'auto', color:'gray'}}>
                     {hour}
                 </Text>
             </View>
-        </View>
+        </TouchableOpacity>
     )
+
+    const openActionModal = (clickedAction) => {
+        setCurrentActionInfo(clickedAction);
+        setIsActionModalVisible(true);
+    }
+
+    const closeModal = () => {
+        setIsActionModalVisible(false);
+    }
 
   return (
     <>
-    <StatusBar style={isThemeDark ? 'light' : 'black'} backgroundColor={theme.colors.backgroundColor}/>
+    <StatusBar style={isThemeDark ? 'light' : 'black'} />
     
     <AppbarHeader
     headerStyle={{ backgroundColor:theme.colors.backgroundColor}}
@@ -99,31 +114,38 @@ const AccountHistory = ({navigation}) => {
 
             return (
                 <View style={{
-                    flexDirection:'column',
-                    key:index
+                    flexDirection: 'column',
                 }}>
-                    <Text style={{...styles.pastActivityText,
-                        marginTop:20
-                    }} >
+                    <Text style={{
+                        ...styles.PastActionText,
+                        marginTop: 20
+                    }}>
                         {formattedDate}
                     </Text>
-                    {options.map(el =>(
-                        <PastActivity
-                        key={el.id}
-                        label={el.title}
-                        type={el.type}
-                        amount={el.amount}
-                        hour={el.hour}
-                        color={el.color}
-                    />
+                    {options.map(el => (
+                        <PastAction
+                            key={el.id}  // Set a unique key using el.id
+                            label={el.person}
+                            type={el.type}
+                            amount={el.amount}
+                            hour={el.hour}
+                            color={el.color}
+                            onClick={() => openActionModal(el)} 
+                        />
                     ))}
-                    
                 </View>
-            )
+            );
         })}
 
     </View>
     </TouchableWithoutFeedback>
+    <Portal>
+        <ActionModal 
+        isVisible={isActionModalVisible} 
+        closeModal={closeModal} 
+        transactionData={currentActionInfo}
+        />
+    </Portal>
     </>
   )
 }
@@ -151,11 +173,11 @@ const styles = StyleSheet.create({
         letterSpacing:0.6,
         marginBottom:20,
     },
-    pastActivityText:{
+    PastActionText:{
         fontSize:16,
         fontWeight:900
     },
-    pastActivityView:{
+    PastActionView:{
         flexDirection:'row',
         alignItems:'center',
         width:'85%',
@@ -163,7 +185,7 @@ const styles = StyleSheet.create({
         borderBottomWidth:1,
         marginVertical:5
     },
-    pastActivityColorView:{
+    PastActionColorView:{
         borderRadius:100,
         width:40,
         height:40,
