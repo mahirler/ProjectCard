@@ -40,7 +40,10 @@ const SearchPage = ({ navigation }) => {
     return (
       // Flat List Item
       <Text
-        style={[styles.itemStyle, { color: "white", width: "50%" }]}
+        style={[
+          styles.itemStyle,
+          { color: isThemeDark ? "white" : "black", width: "50%" },
+        ]}
         onPress={() => getItem(item)}
       >
         {item.title}
@@ -85,10 +88,16 @@ const SearchPage = ({ navigation }) => {
         <Searchbar
           style={[
             styles.textInputStyle,
-            { marginTop: 20, width: "90%", alignSelf: "center" },
+            {
+              marginTop: 20,
+              width: "90%",
+              alignSelf: "center",
+            },
           ]}
+          placeholderTextColor={"black"}
           onChangeText={(text) => setSearch(text)}
           value={search}
+          iconColor="black"
           underlineColorAndroid="transparent"
           placeholder="Ara"
           keyboardType="default"

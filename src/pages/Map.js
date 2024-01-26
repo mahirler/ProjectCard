@@ -51,6 +51,8 @@ export default function Map({ navigation }) {
         mapType="standard"
         customMapStyle={isThemeDark ? DarkMapStyle : LightMapStyle}
         userInterfaceStyle={isThemeDark ? "dark" : "light"}
+        loadingEnabled={true}
+        rotateEnabled={false}
       >
         {markers.map((item, _index) => {
           return (

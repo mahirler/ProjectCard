@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "ProjectCard",
+    "name": "BenBuy",
     "slug": "ProjectCard",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -28,7 +28,7 @@
         "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO"
       ],
-      "package": "com.anonymous.ProjectCard"
+      "package": "com.anonymous.Benbuy"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -46,6 +46,11 @@
           "cameraPermission": "Allow $(PRODUCT_NAME) to access camera."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "4ebb68c1-3646-4ce5-9690-7c30fdeb0a01"
+      }
+    }
   }
 }

@@ -8,6 +8,12 @@ export default function CustomPieChart({
   selected,
   height = 200,
 }) {
+  const GetTotalAmount = () => {
+    let amount = 0;
+    for (let i = 0; i < data.length; i++) amount += data[i].amount;
+    return amount;
+  };
+
   const Labels = ({ slices, height, width }) => {
     return slices.map((slice, index) => {
       const { labelCentroid, pieCentroid, data } = slice;
@@ -22,7 +28,8 @@ export default function CustomPieChart({
           fontSize={30}
           fontWeight={"bold"}
         >
-          {selected == index && data.amount + "₺"}
+          {selected == index &&
+            ((data.amount / GetTotalAmount()) * 100).toFixed(2) + "%"}
         </Text>
       );
     });

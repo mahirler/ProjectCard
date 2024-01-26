@@ -47,7 +47,7 @@ function NotificationBar({ index, item, clearIndexed }) {
     <Swipeable
       key={index}
       rightThreshold={110}
-      friction={2}
+      friction={1.2}
       onSwipeableOpen={() => {
         swipeRef.current.reset();
         clearIndexed(index);
@@ -203,7 +203,7 @@ export default function Notifications({ navigation }) {
             >
               Bildirimler
             </Text>
-            <IconButton icon="cog-outline" size={30} />
+            <IconButton size={30} />
           </>
         }
         headerStyle={{ justifyContent: "space-between" }}

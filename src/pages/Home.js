@@ -96,7 +96,7 @@ export default function Home({ navigation }) {
       label: "Hesap Hareketleri",
       icon: "account-clock-outline",
       onPress: () => {
-        navigation.navigate("AccountHistory")
+        navigation.navigate("AccountHistory");
         setVisible(false);
       },
     },
