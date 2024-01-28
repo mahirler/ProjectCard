@@ -1,4 +1,4 @@
-import { View, ScrollView, Modal, Platform } from "react-native";
+import { View, ScrollView, Modal, Platform, TouchableOpacity } from "react-native";
 import {
   Button,
   Divider,
@@ -15,6 +15,8 @@ export default function MoneyTransfer({ showSendMoney, navigation }) {
   const { theme, isThemeDark } = usePreferences();
   const [value, setValue] = useState("phonenumber");
   const [filterValue, setFilterValue] = useState("");
+
+
 
   const contacts = [
     {
@@ -130,7 +132,7 @@ export default function MoneyTransfer({ showSendMoney, navigation }) {
               .map((item, _index) => {
                 return (
                   <React.Fragment key={_index}>
-                    <View
+                    <TouchableOpacity
                       style={{
                         height: 100,
                         alignItems: "center",
@@ -138,7 +140,11 @@ export default function MoneyTransfer({ showSendMoney, navigation }) {
                         alignSelf: "center",
                         flexDirection: "row",
                       }}
-                    >
+                      onPress={() => {
+                        navigation.navigate("TransDecpPage")
+                        showSendMoney(false);
+                      }} // Check if the screen is focused before navigating
+                      >
                       <View
                         style={{
                           width: 80,
@@ -146,6 +152,7 @@ export default function MoneyTransfer({ showSendMoney, navigation }) {
                           borderRadius: 10,
                           backgroundColor: "grey",
                         }}
+                        
                       />
                       <View
                         style={{
@@ -158,7 +165,7 @@ export default function MoneyTransfer({ showSendMoney, navigation }) {
                         <Text style={{ fontSize: 20 }}>{item.Name}</Text>
                         <Text>{item.Number}</Text>
                       </View>
-                    </View>
+                    </TouchableOpacity>
                     <Divider leftInset="true" />
                   </React.Fragment>
                 );
@@ -224,6 +231,10 @@ export default function MoneyTransfer({ showSendMoney, navigation }) {
               textColor={isThemeDark ? "black" : "white"}
               buttonColor={isThemeDark ? "white" : "black"}
               style={{ width: "90%", height: 70, justifyContent: "center" }}
+              onPress={()=> {
+                showSendMoney(false);
+                navigation.navigate("TransDecpPage");
+              }}
             >
               Devam Et
             </Button>

@@ -17,6 +17,13 @@ import SearchPage from "./pages/SearchPage";
 import Opportunities from "./pages/Opportunities";
 import Feedback from "./pages/Feedback";
 import AccountHistory from "./pages/AccountHistory";
+import InvitationPage from "./pages/InvitationPage";
+import TransDecpPage from "./pages/TransDecpPage";
+import SendMoneyPage from "./pages/SendMoneyPage";
+import ConfirmPayment from "./pages/ConfirmPayment";
+import AppLangPage from "./pages/AppLangPage";
+import NotificateSettingsPage from "./pages/NotificateSettingsPage";
+import ActiveDevicesPage from "./pages/ActiveDevicesPage";
 
 const Stack = createNativeStackNavigator();
 
@@ -83,6 +90,13 @@ export default function App() {
           <Stack.Screen name="Refund" component={Refund} />
           <Stack.Screen name="Opportunities" component={Opportunities} />
           <Stack.Screen name="Feedback" component={Feedback} />
+          <Stack.Screen name="InvitationPage" component={InvitationPage} />
+          <Stack.Screen name="TransDecpPage" component={TransDecpPage} />
+          <Stack.Screen name="SendMoneyPage" component={SendMoneyPage} />
+          <Stack.Screen name="ConfirmPayment" component={ConfirmPayment} />
+          <Stack.Screen name="AppLangPage" component={AppLangPage} />
+          <Stack.Screen name="NotificateSettingsPage" component={NotificateSettingsPage} />
+          <Stack.Screen name="ActiveDevicesPage" component={ActiveDevicesPage} />
         </Stack.Navigator>
         <ModalMenu />
       </NavigationContainer>

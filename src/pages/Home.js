@@ -90,7 +90,10 @@ export default function Home({ navigation }) {
     {
       label: "Arkadaşını Davet Et",
       icon: "account-plus-outline",
-      onPress: () => {},
+      onPress: () => {
+        navigation.navigate("InvitationPage")
+        setVisible(false)
+      },
     },
     {
       label: "Hesap Hareketleri",
@@ -375,7 +378,7 @@ export default function Home({ navigation }) {
           presentationStyle="formSheet"
           animationType="slide"
         >
-          <MoneyTransfer showSendMoney={setShowSendMoney} />
+          <MoneyTransfer showSendMoney={setShowSendMoney} navigation={navigation}/>
         </Modal>
       </>
       {/* </GestureHandlerRootView> */}

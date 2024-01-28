@@ -3,9 +3,10 @@ import AppbarHeader from '../components/AppbarHeader'
 import { StatusBar } from 'expo-status-bar'
 import usePreferences from '../contexts/usePreferences'
 import { Appbar, Portal, Text, TextInput } from 'react-native-paper'
-import { Keyboard, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { Keyboard,  StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import usePastActions from '../usePastActions'
 import ActionModal from '../components/AccountHistory/ActionModal'
+import ActionList from '../components/AccountHistory/ActionList'
 
 const AccountHistory = ({navigation}) => {
     const{toggleTheme, isThemeDark, theme} = usePreferences();
@@ -64,7 +65,12 @@ const AccountHistory = ({navigation}) => {
     content={
         <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
         <View style={styles.AppbarViewStyle}>
-        <Text onPress={()=> navigation.navigate("Home")} style={{...styles.headerText, color:theme.colors.textColor}} >
+        <Text onPress={()=> navigation.navigate("Home")} style={{
+            margin:10,
+            fontSize:23,
+            letterSpacing:0.3,
+            fontWeight:700,
+            color:theme.colors.textColor}} >
             Geri
         </Text>
         <Appbar.Action
@@ -96,46 +102,7 @@ const AccountHistory = ({navigation}) => {
         onChangeText={(text) => setSearch(text)}
         />
 
-        {Object.entries(filteredDataSource).map(([date, options, index]) => {
-            // Splitting the date string into day, month, and year parts
-            const [month, day, year] = date.split('/');
-
-            // Creating a new Date object with the correct format
-            const temp = new Date(year,month,day);
-            
-            // Checking if the date is valid before formatting
-            const formattedDate = temp instanceof Date && !isNaN(temp)
-                ? temp.toLocaleDateString('tr-TR', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                })
-                : 'Erişilemeyen Tarih';
-
-            return (
-                <View style={{
-                    flexDirection: 'column',
-                }}>
-                    <Text style={{
-                        ...styles.PastActionText,
-                        marginTop: 20
-                    }}>
-                        {formattedDate}
-                    </Text>
-                    {options.map(el => (
-                        <PastAction
-                            key={el.id}  // Set a unique key using el.id
-                            label={el.person}
-                            type={el.type}
-                            amount={el.amount}
-                            hour={el.hour}
-                            color={el.color}
-                            onClick={() => openActionModal(el)} 
-                        />
-                    ))}
-                </View>
-            );
-        })}
+        <ActionList filteredDataSource={filteredDataSource} openActionModal={openActionModal} />
 
     </View>
     </TouchableWithoutFeedback>

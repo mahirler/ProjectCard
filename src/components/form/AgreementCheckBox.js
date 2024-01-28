@@ -11,7 +11,10 @@ const AgreementCheckBox = ({isChecked, onClick}) => {
     <CheckBox
     value={isChecked}
     onValueChange={onClick}
-    style={{ marginEnd:'auto'}}
+    style={{ 
+      marginEnd:'auto',
+      borderRadius:20
+    }}
     />
     </View>
   )

@@ -51,7 +51,7 @@ const ActionModal = ({isVisible, closeModal, transactionData}) => {
           <InfoLine dataLabel={"İşlem Tarihi"} dataInfo={"Boş Tarih"} />
           <InfoLine dataLabel={"Tutar"} dataInfo={"Boş Veri"} />
           <InfoLine dataLabel={"Kalan Bakiye"} dataInfo={"Boş Veri"} />
-          <InfoLine dataLabel={"Açıklama"} dataInfo={"Boş Veri fsdfsdsdfsdfdfsdfsdf"} />
+          <InfoLine dataLabel={"Açıklama"} dataInfo={"Boş Veri "} />
         </View>
 
         <Button

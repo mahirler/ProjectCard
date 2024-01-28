@@ -58,6 +58,7 @@ export default function SignUp({ navigation }) {
     },
     safeAreaView: {
       flex: 1,
+      backgroundColor:'white',
       justifyContent:"center",
     },
     button: {

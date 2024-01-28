@@ -11,7 +11,7 @@ import SubmitButton from "../components/form/SubmitButton";
 import usePreferences from "../contexts/usePreferences";
 
 
-export default function SignUp({ navigation }) {
+export default function SignIn({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const {toggleTheme, isThemeDark, theme} = usePreferences();
 
